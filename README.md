@@ -1,49 +1,26 @@
-# Softwareentwicklungs Grundlagen
-
- 
+# Softwareentwicklungsgrundlagen
 
 ## Über dieses Projekt
 
- 
-
-Dies hier is unser gemeinsames Repository um mit C# die Programmiergrundlagen zu lernen.
-
- 
+Dies hier ist unser gemeinsames Repository um mit c# die Programmiergrundlagen zu lernen.
 
 ## Repository klonen
 
- 
-
-1. Einen Ordner raussuchen wo das lokale Repo gespeichert werden soll.
-
-2. Befehl in Powershell eingeben: git clone <Link zum Repo.git>
-
-3. Profit?
-
- 
+1. Einen Ordner raussuchen, wo das lokale Repo gespeichert werden soll.
+2. `git clone <LinkZumRepo.git>`
+3. Profit???
 
 Anschließend das Projekt in VSCode öffnen:
 
- 
-
-```Powershell
-
-# öffne VSCode im aktuellen Ordner
-
-Code .
-
+```powershell
+# Öffne VSCode im aktuellen Ordner
+code .
 ```
 
 ## Contributing
 
- 
-
 Aktuell werden **keine** Contributer gesucht.
 
- 
-
-## License
-
- 
+## Licensing
 
 *Erstmal nichts.*
