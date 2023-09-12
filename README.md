@@ -2,7 +2,7 @@
 
 ## Über dieses Projekt
 
-Dies hier ist unser gemeinsames Repository um mit c# die Programmiergrundlagen zu lernen.
+Dies hier ist unser **gemeinsames** Repository um mit c# die Programmiergrundlagen zu lernen.
 
 ## Repository klonen
 
