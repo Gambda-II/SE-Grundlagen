@@ -22,6 +22,7 @@ while (!(checkParseFirstNumber && checkParseSecondNumber))
 int result = num1 + num2;
 Console.WriteLine("{0} + {1} = {2}", num1, num2, result);
 
+
 /*
 var funcNumber = Console.ReadLine;
 Console.WriteLine(funcNumber);

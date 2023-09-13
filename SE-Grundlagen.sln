@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loops", "Loops\Loops.csproj", "{E0AF564B-C979-434A-9572-98FFEDE3DB0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loops", "Loops\Loops.csproj", "{E0AF564B-C979-434A-9572-98FFEDE3DB0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Calculator.csproj", "{D6FE3E1F-670E-4A3B-8AD8-22A0907629EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator", "Calculator\Calculator.csproj", "{D6FE3E1F-670E-4A3B-8AD8-22A0907629EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlFlows", "ControlFlows\ControlFlows.csproj", "{D04BC55D-A705-4124-8005-DB6DF9773565}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Functions", "Functions\Functions.csproj", "{9F6AF19D-CD0E-4EA6-A9C6-711C792F53FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlappyBird", "FlappyBird\FlappyBird.csproj", "{E0303A0B-34BB-4A3C-AF15-FF5A1F9FD70D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessTheNumber", "GuessTheNumber\GuessTheNumber.csproj", "{9A3F9404-7800-4C99-9937-01136245BEE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{D6FE3E1F-670E-4A3B-8AD8-22A0907629EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6FE3E1F-670E-4A3B-8AD8-22A0907629EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6FE3E1F-670E-4A3B-8AD8-22A0907629EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D04BC55D-A705-4124-8005-DB6DF9773565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D04BC55D-A705-4124-8005-DB6DF9773565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D04BC55D-A705-4124-8005-DB6DF9773565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D04BC55D-A705-4124-8005-DB6DF9773565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F6AF19D-CD0E-4EA6-A9C6-711C792F53FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6AF19D-CD0E-4EA6-A9C6-711C792F53FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F6AF19D-CD0E-4EA6-A9C6-711C792F53FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F6AF19D-CD0E-4EA6-A9C6-711C792F53FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0303A0B-34BB-4A3C-AF15-FF5A1F9FD70D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0303A0B-34BB-4A3C-AF15-FF5A1F9FD70D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0303A0B-34BB-4A3C-AF15-FF5A1F9FD70D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0303A0B-34BB-4A3C-AF15-FF5A1F9FD70D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A3F9404-7800-4C99-9937-01136245BEE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A3F9404-7800-4C99-9937-01136245BEE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A3F9404-7800-4C99-9937-01136245BEE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A3F9404-7800-4C99-9937-01136245BEE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
