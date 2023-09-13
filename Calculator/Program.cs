@@ -19,6 +19,20 @@
     return num;
 }
 
+string GetOperation()
+{
+    string operation = "emptyLater", input;
+    do 
+    {
+        Console.WriteLine("What would you like to do with these numbers? Add, subtract, multiply or divide?");
+        input = Console.ReadLine();
+
+
+    } while (false);
+
+    return operation;
+}
+
 Console.WriteLine("Willkommen im Taschenrechner Potato-Instruments PI-30DE");
 
 
