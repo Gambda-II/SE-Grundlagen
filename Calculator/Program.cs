@@ -1,23 +1,29 @@
-﻿Console.WriteLine("Willkommen im Taschenrechner Potato-Calc v1");
-
-bool checkParseFirstNumber = false, checkParseSecondNumber = false;
-int num1 = 0, num2 = 0;
-
-while (!(checkParseFirstNumber && checkParseSecondNumber))
+﻿int GetNumber()
 {
+    int num;
+    bool checkParse;
+    string input;
+    do
+    {
+        Console.WriteLine("Please enter an integer:");
+        input = Console.ReadLine();
+        checkParse = int.TryParse(input, out num);
 
-    Console.WriteLine("Erste Zahl eingeben");
-    var firstNumber = Console.ReadLine();
+        if (checkParse == false)
+        {
+            Console.WriteLine("Invalid input. Please enter an integer.");
+        }
 
-    Console.WriteLine("Zweite Zahl eingeben");
-    var secondNumber = Console.ReadLine();
+    } while (checkParse == false);
 
-    //Console.WriteLine($"{firstNumber} + {secondNumber} = {System.Convert.ToInt32(firstNumber) + System.Convert.ToInt32(secondNumber)}" );
-
-    checkParseFirstNumber = int.TryParse(firstNumber, out num1);
-    checkParseSecondNumber = int.TryParse(secondNumber, out num2);
-
+    return num;
 }
+
+Console.WriteLine("Willkommen im Taschenrechner Potato-Instruments PI-30DE");
+
+
+int num1 = GetNumber();
+int num2 = GetNumber();
 
 int result = num1 + num2;
 Console.WriteLine("{0} + {1} = {2}", num1, num2, result);

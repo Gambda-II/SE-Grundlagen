@@ -81,7 +81,7 @@ while (!isWinning && numberOfTries > 0)
     }
     Console.WriteLine(outputMessage);
 }
-Console.WriteLine(isWinning ? "Gewonnen" : "Schade");
+Console.WriteLine(isWinning ? "Gewonnen!" : "Schade, verloren!");
 
     bool checkAtEnd = true;
     while (checkAtEnd)
