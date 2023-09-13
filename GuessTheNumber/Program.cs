@@ -18,7 +18,7 @@ while(checkForCorrectInput)
         while (checkForCorrectInput)
         {
             checkForCorrectInput = !int.TryParse(Console.ReadLine(), out minValue);
-            Console.WriteLine(checkForCorrectInput ? "Das ist keine Zahl wtf???" : "");
+            Console.WriteLine(checkForCorrectInput ? "Das ist keine Zahl wtf??? Neue Zahl eingeben." : "");
         }
 
         checkForCorrectInput = true;
@@ -27,7 +27,7 @@ while(checkForCorrectInput)
         while (checkForCorrectInput)
         {
             checkForCorrectInput = !int.TryParse(Console.ReadLine(), out maxValue);
-            Console.WriteLine(checkForCorrectInput ? "Das ist keine Zahl wtf???" : "");
+            Console.WriteLine(checkForCorrectInput ? "Das ist keine Zahl wtf??? Neue Zahl eingeben." : "");
         }
         checkForCorrectInput = true;
 
