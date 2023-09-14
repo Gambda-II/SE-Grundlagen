@@ -1,4 +1,6 @@
-﻿int GetNumber()
+﻿using System;
+
+int GetNumber()
 {
     int num;
     bool checkParse;
@@ -19,28 +21,61 @@
     return num;
 }
 
-string GetOperation()
+ConsoleKey GetOperation()
 {
-    string operation = "emptyLater", input;
+    ConsoleKey returnKey;
+    bool checkParse;
     do 
     {
-        Console.WriteLine("What would you like to do with these numbers? Add, subtract, multiply or divide?");
-        input = Console.ReadLine();
+        Console.WriteLine("What would you like to do with these numbers? Add +, subtract -, multiply * or divide /?");
+        returnKey = Console.ReadKey(true).Key;
+        checkParse = (returnKey == ConsoleKey.Add || returnKey == ConsoleKey.Subtract || returnKey == ConsoleKey.Multiply || returnKey == ConsoleKey.Divide || returnKey == ConsoleKey.OemPlus || returnKey == ConsoleKey.OemMinus);
 
+    } while (!checkParse);
 
-    } while (false);
-
-    return operation;
+    return returnKey;
 }
 
 Console.WriteLine("Willkommen im Taschenrechner Potato-Instruments PI-30DE");
 
+int Calculate(int num1, int num2, ConsoleKey operation)
+{
+    int result;
+    int pressedKeyNumber = (int)operation;
+    switch (pressedKeyNumber)
+    {
+        case 187: // +
+            result = num1 + num2;
+            break;
+        case 189: // -
+            result = num1 - num2;
+            break;
+        case 107: // +
+            result = num1 + num2;
+            break;
+        case 109: // -
+            result = num1 - num2;
+            break;
+        case 106: // *
+            result = num1 * num2;
+            break;
+        case 111: // /
+            result = num1 / num2;
+            break;
+        default:
+            result = int.MaxValue;
+            break;
+    }
 
-int num1 = GetNumber();
-int num2 = GetNumber();
+    return result;
+}
 
-int result = num1 + num2;
-Console.WriteLine("{0} + {1} = {2}", num1, num2, result);
+
+//int num1 = GetNumber();
+//int num2 = GetNumber();
+
+int result = Calculate(GetNumber(), GetNumber(), GetOperation());
+Console.WriteLine(result);
 
 
 /*
