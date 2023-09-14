@@ -82,7 +82,7 @@ double doubleNumber = 1.0; //
 decimal dezimalNumber = 1.0m; //needs m or M
 char sign = '+';
 
-/* float: bit to decimal conversion
+/* float: bitstring to decimal conversion
  * 
  * 01000001001011000000000000000000 -> 32 bits
  * 0 10000010 01011000000000000000000 -> first bit = sign bit, next 8 bits = exponent bit, next 23 bits = mantissa, bias = -127
@@ -91,9 +91,34 @@ char sign = '+';
  * 0 => sign = +
  * 1000 0010 => exponent = 130
  * (1)010 1100 0000 0000 0000 0000 => mantissa = 2 883 584
- * (1.0) + 0 + .25 + 0 + .0625 + 0.03125 + 0 + 0 + 0 + ... = 1.34375
+ * (1.0) + 0 + .25 + 0 + .0625 + 0.03125 + 0 + 0 + 0 + ... = 1.34375 !!OR!! 2 883 584 / 2^(23) = 0.34375 + hidden 1.0 => 1.34375
+ * 
  * 0 10000010 01011000000000000000000 => + 1.34375 * 2^(130-127) = + 1.34375 * 2^3 => + 1.34375 * 8 = + 10.75
+ * 
+ * float: decimal to bitstring conversion
+ * 
+ * - 15.8 
+ * ----> 15 / 2 = 7 R 1 => 1        ----> .8 * 2 = 1.6 => 1
+ * ----> 7 / 2  = 3 R 1 => 1        ----> .6 * 2 = 1.2 => 1
+ * ----> 3 / 2  = 1 R 1 => 1        ----> .2 * 2 = 0.4 => 0
+ * ----> 1 / 2  = 0 R 1 => 1        ----> .4 * 2 = 0.8 => 0 repeated ==> 1100 1100 1100 [1100...] mantissa bits
+ * ----> 0 / 2  = 0 R 0 => 0 ==> 01111 exponent bits ==> 00001111
+ * ==> full bitstring 00001111.110011001100...
+ * decimalpoint shift 3 to the left to hidden bit ==> 00001.111110011001100... 
+ * exponent = shift + bias = 3 + 127 = 130 => 10000010
+ * mantissa = 1111100110011001100... truncated to 23 bits => 1111 1001 1001 1001 1001 100
+ * sign bit = 1
+ * full bitstring => 1 10000010 11111001100110011001100...
+ * 11000001011111001100110011001100...
+ * my bit string:               11000001011111001100110011001100
+ * actual stored bit string:    11000001011111001100110011001101
+ * last bit should be rounded up because the next bit was 1
+ * 
  */
+
+int bitString = BitConverter.SingleToInt32Bits(-15.8f);
+float floatValue = BitConverter.Int32BitsToSingle(bitString);
+Console.WriteLine("Bitstring: {0} \n Floatingpointvalue: {1}", bitString, floatValue);
 
 //Komplexe Datentypen
 object myObject = new object();
