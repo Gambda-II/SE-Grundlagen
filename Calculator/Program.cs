@@ -60,6 +60,7 @@ float Calculate(int firstNumber, int secondNumber, ConsoleKeyInfo operation)
             {
                 Console.WriteLine("!!!Division by zero does not work... I guess!!");
                 result = float.PositiveInfinity;
+
             }
             else
             {
