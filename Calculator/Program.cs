@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 int GetNumber()
 {
@@ -21,16 +22,17 @@ int GetNumber()
     return num;
 }
 
-ConsoleKey GetOperation()
+ConsoleKeyInfo GetOperation()
 {
-    ConsoleKey returnKey;
+    ConsoleKeyInfo returnKey;
     bool checkParse;
     do 
     {
         Console.WriteLine("What would you like to do with these numbers? Add +, subtract -, multiply * or divide /?");
-        returnKey = Console.ReadKey(true).Key;
-        checkParse = (returnKey == ConsoleKey.Add || returnKey == ConsoleKey.Subtract || returnKey == ConsoleKey.Multiply || returnKey == ConsoleKey.Divide || returnKey == ConsoleKey.OemPlus || returnKey == ConsoleKey.OemMinus);
-
+        returnKey = Console.ReadKey(true);
+        checkParse = (returnKey.KeyChar == '+' || returnKey.KeyChar == '-' || returnKey.KeyChar == '*' || returnKey.KeyChar == '/' || returnKey.KeyChar == '%' || returnKey.KeyChar == '\\' );
+        
+        
     } while (!checkParse);
 
     return returnKey;
@@ -38,44 +40,55 @@ ConsoleKey GetOperation()
 
 Console.WriteLine("Willkommen im Taschenrechner Potato-Instruments PI-30DE");
 
-int Calculate(int num1, int num2, ConsoleKey operation)
+float Calculate(int firstNumber, int secondNumber, ConsoleKeyInfo operation)
 {
-    int result;
-    int pressedKeyNumber = (int)operation;
+    float num1 = (float)firstNumber, num2 = (float)secondNumber, result;
+    char pressedKeyNumber = operation.KeyChar;
     switch (pressedKeyNumber)
     {
-        case 187: // +
+        case '+':
             result = num1 + num2;
             break;
-        case 189: // -
+        case '-':
             result = num1 - num2;
             break;
-        case 107: // +
-            result = num1 + num2;
-            break;
-        case 109: // -
-            result = num1 - num2;
-            break;
-        case 106: // *
+        case '*':
             result = num1 * num2;
             break;
-        case 111: // /
-            result = num1 / num2;
+        case '/':
+            if (num2 == 0)
+            {
+                Console.WriteLine("!!!Division by zero does not work... I guess!!");
+                result = float.PositiveInfinity;
+            }
+            else
+            {
+                result = num1 / num2;
+            }
+            break;
+        case '%':
+            result = num1 % num2;
+            break;
+        case '\\':
+            int resultInt = (int)num1 / (int)num2;
+            result = (float)resultInt;
             break;
         default:
-            result = int.MaxValue;
+            result = float.MaxValue;
             break;
     }
-
+    Console.WriteLine("{0} {1} {2} = {3}", num1, pressedKeyNumber , num2, result);
     return result;
 }
 
 
-//int num1 = GetNumber();
-//int num2 = GetNumber();
-
-int result = Calculate(GetNumber(), GetNumber(), GetOperation());
-Console.WriteLine(result);
+while (true)
+{
+int num1 = GetNumber();
+int num2 = GetNumber();
+ConsoleKeyInfo pressedKey = GetOperation();
+double result = Calculate( num1, num2, pressedKey);
+}
 
 
 /*
