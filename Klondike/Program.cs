@@ -1,8 +1,8 @@
 ﻿//Special chracters
 //  └ ─ ┘ │ ▀ ▄ ▓ ▒ ░ 
 //  ♠ ♣ ♥ ♦
-/*
-Card newCard = new Card();
+
+/*Card newCard = new Card();
 newCard.faceUp = true;
 newCard.value = Value.Queen;
 newCard.suit = Suit.Hearts;
@@ -10,17 +10,67 @@ string[] renderCard = newCard.Render();
 RenderCard(newCard);
 */
 
-Card meineDamenUndHerren = new Card();
-meineDamenUndHerren.faceUp = true;
-meineDamenUndHerren.value = Value.Queen;
-meineDamenUndHerren.suit = Suit.Diamonds;
-RenderCard(meineDamenUndHerren);
+CreateGame();
+
+void CreateGame()
+{
+    Console.WindowHeight    = 3 * ( Card.renderHeight + 1);
+    Console.WindowWidth     = 7 * (Card.renderWidth + 1);
+
+    int posX = 0, posY = 0;
+    Card[] cards = new Card[51];
 
 
-void RenderCard(Card card)
+    for (int k = 0;k < 3;k++)
+    {
+        cards[k].faceUp = false;
+        cards[k].value = Value.Jack;
+        cards[k].suit = Suit.Spades;
+    }
+
+    for (int k = 0;k < 3 * 7 - 1;k++)
+    {
+        if (k == 1 || (k > 7 && k < 15))
+        {
+
+        }
+        RenderCard(cards[k], k * Card.renderWidth, k * Card.renderHeight);
+
+    }
+
+//  Console.SetCursorPosition(posX, posY);
+/*
+    Card card = new Card();
+    card.faceUp = false;
+    card.value = Value.Jack;
+    card.suit = Suit.Spades;
+    RenderCard(card,posX,posY);
+
+    card.faceUp = true;
+    card.value = Value.Ace;
+    card.suit = Suit.Spades;
+    RenderCard(card, posX + 0 * Card.renderWidth, posY + 1 * Card.renderHeight + 1);
+
+    card.faceUp = true;
+    card.value = Value.Three;
+    card.suit = Suit.Clubs;
+    RenderCard(card, posX + 1 * Card.renderWidth, posY + 1 * Card.renderHeight + 1);
+
+    Console.SetCursorPosition(20, 9);
+    card.faceUp = true;
+    card.value = Value.Four;
+    card.suit = Suit.Hearts;
+    RenderCard(card, posX + 2 * Card.renderWidth, posY + 1 * Card.renderHeight+ 1);
+
+    Console.Read();
+*/
+}
+
+void RenderCard(Card card,int posX, int posY)
 {
     for (int i = 0; i < Card.renderHeight + 1; i++)
     {
+        Console.SetCursorPosition(posX, posY++);
         Console.WriteLine(card.Render()[i]);
     }
 }
@@ -59,6 +109,7 @@ class Card
     private string[] symbols = { "♠", "♣", "♥", "♦" };
 
     public const int renderHeight = 7;
+    public const int renderWidth = 9;
 
     public string[] Render()
     {
