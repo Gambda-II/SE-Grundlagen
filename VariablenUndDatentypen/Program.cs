@@ -45,7 +45,8 @@ something = new object();
 twoDirections = new Vector2(1.0f,2.7f);
 threeDirections = new Vector3(0.1f, 1.2f, 12.3f);
 
-address = new IPAddress(123456);
+address = new IPAddress(123456); // 123456 => 64.226.1.0 ???
+Console.WriteLine("This is an ip adress: " + address);
 
 var irgendwas = new Random();
 
@@ -116,10 +117,6 @@ char sign = '+';
  * 
  */
 
-int bitString = BitConverter.SingleToInt32Bits(-15.8f);
-float floatValue = BitConverter.Int32BitsToSingle(bitString);
-Console.WriteLine("Bitstring: {0} \n Floatingpointvalue: {1}", bitString, floatValue);
-
 //Komplexe Datentypen
 object myObject = new object();
 string myString = "Hello Morld!";
@@ -133,6 +130,28 @@ double[] arrayOfDoubles = new double[5];
 double[][] jaggedArray = new double[2][];
     jaggedArray[0] = new double[3] { 1.0, 3.0, 5.0 };
     jaggedArray[1] = new double[3] { 2.0, 4.0, 6.0 };
-    //jaggedArray[2] = new double[3] { 3.0, 6.0, 9.0 }; geht nicht weil die Dimension bis 2 geht
+//  jaggedArray[2] = new double[3] { 3.0, 6.0, 9.0 }; geht nicht weil die Dimension bis 2 geht
 
 #endregion
+
+#region Werte & Referenzen, value types and reference types
+int mamboNumber = 5;
+int[] mamboArray = { 1, 2, 3 };
+
+Console.WriteLine("Before Modify() ran.");
+Console.WriteLine("This is Mambo Number " + mamboNumber);
+Console.WriteLine("This is Mambo Array " + string.Join(',', mamboArray));
+
+Modify(mamboNumber,mamboArray);
+
+Console.WriteLine("After Modify() ran.");
+Console.WriteLine("This is Mambo Number " + mamboNumber);
+Console.WriteLine("This is Mambo Array " + string.Join(',', mamboArray));
+
+#endregion
+
+void Modify(int num, int[] array)
+{
+    num = 4;
+    array[0] = 500;
+}
