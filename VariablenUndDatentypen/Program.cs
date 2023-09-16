@@ -147,11 +147,11 @@ Modify(mamboNumber,mamboArray);
 Console.WriteLine("After Modify() ran.");
 Console.WriteLine("This is Mambo Number " + mamboNumber);
 Console.WriteLine("This is Mambo Array " + string.Join(',', mamboArray));
-
-#endregion
-
 void Modify(int num, int[] array)
 {
     num = 4;
     array[0] = 500;
 }
+
+#endregion
+
