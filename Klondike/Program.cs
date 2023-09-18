@@ -22,13 +22,14 @@ void CreateGame()
     Console.WindowWidth = 7 * (Card.renderWidth + 2);
     
 
-    int numberOfCards = 52;
 
-    Card[] cards = CreateShuffledCards(CreateCards());
+    //Card[] cards = CreateShuffledCards(CreateCards());
     // this is for testing, uncomment above and delete below
-    //Card[] cards = CreateDebugCards(CreateCards());
+    Card[] cards = CreateDebugCards(CreateCards());
 
-    Card[] emptyCards = Array.Empty<Card>(); // using this instead of new Card[0];
+    // using this instead of new Card[0]; I'm not even using this?
+    Card[] emptyCards = Array.Empty<Card>();
+    Card emptyCard = new Card((Suit)0,(Value)0,true);
 
     Stack[] stacks = CreateStacks(cards);
 
@@ -43,21 +44,42 @@ void CreateGame()
     {
         ConsoleKeyInfo pressedKey = Console.ReadKey(true);
         int pressedNumber = (int)pressedKey.KeyChar;
-        if (pressedNumber == 48)
+
+        // to display the KeyChar number when pressed
+        // can be deleted later
+        //Console.WriteLine(pressedNumber);
+        //Console.ReadLine();
+
+
+        //one card (bottom one in the display stack) gets lost and replaced (by the top one)
+        //number of cards decreases gradually
+
+        switch (pressedNumber)
         {
-            MoveCard(stacks[7], stacks[12],true);
-            
-        }
-        else if (pressedNumber > 48 && pressedNumber < 56)
-        {
-            
-            ConsoleKeyInfo pressedKeyAgain = Console.ReadKey(true);
-            int pressedNumberAgain = (int)pressedKeyAgain.KeyChar;
-            
-            DisplayText($"You want to move from {pressedNumber - 48} to {pressedNumberAgain - 48}");
-            Stack firstStackPicked = ChooseStack(stacks, cards,pressedNumber);
-            Stack secondStackPicked = ChooseStack(stacks, cards,pressedNumberAgain);
-            MoveCard(firstStackPicked,secondStackPicked);
+            case (int)Inputs.Zero:
+                
+                break;
+            case (int)Inputs.Space:
+                if (stacks[7].GetCard(0).value > 0)
+                {
+                MoveCard(stacks[7], stacks[12],true);
+                }
+                else
+                {
+                    stacks[7].RemoveCard(stacks[7].GetCard(0));
+                    int maxIterations = stacks[12].stackedCards.Count;
+                    for (int k = 0;k < maxIterations;k++)
+                    {
+                        stacks[12].GetCard(0).faceUp = false;
+                        MoveCard(stacks[12], stacks[7],true);
+                    }
+                    stacks[7].GetCard(0).faceUp = false;
+                }
+                break;
+            default:
+                break;
+                
+
         }
 
         Console.Clear();
@@ -88,7 +110,9 @@ Stack ChooseStack(Stack[] stacks, Card[] cards, int input)
             choosedStack = stacks[pressedNumber - 49];
             invalidInput = false;
         }
-        else if (pressedNumber == 48)
+        // this never happens
+        // can be removed
+        else if (pressedNumber == 32)
         {
             choosedStack = stacks[pressedNumber +7];
             MoveCard(stacks[pressedNumber - 49 + 7],stacks[pressedNumber - 49 + 12]);
@@ -104,20 +128,40 @@ Stack ChooseStack(Stack[] stacks, Card[] cards, int input)
 
 void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
 {
-    Card startCard = startingStack.GetCard(startingStack.numberOfCards - 1);
-    Card targetCard = targetStack.GetCard(targetStack.numberOfCards - 1);
+
+    Card startCard = startingStack.stackedCards.Count > 0 ? startingStack.GetCard(startingStack.numberOfCards - 1) : startingStack.GetCard(startingStack.stackedCards.Count - 1);
+    Card targetCard = targetStack.stackedCards.Count > 0 ? targetStack.GetCard(targetStack.numberOfCards - 1) : targetStack.GetCard(targetStack.stackedCards.Count - 1);
 
     if (CheckValidMove(startCard, targetCard) || allow)
     {
+    
+        if (targetCard != null)
+        {
+            if ((int)targetCard.value < 1)
+            {
+                targetStack.RemoveCard(targetStack.GetCard(0));
+            }
+        }
+
         startingStack.RemoveCard(startCard);
+
+        if (startingStack.numberOfCards < 1)
+        {
+            startingStack.AddCard(new Card((Suit)0,(Value)0,true));
+        }
+
         targetStack.AddCard(startCard);
+        DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}",10, 10 + targetStack.numberOfCards);
+        DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
     }
     else
     {
-        DisplayText($"Can not move cards from {(int)startingStack.position} to {(int)targetStack.position}.");
-        
+        DisplayText($"Can not move cards."); 
     }
 
+
+
+    Console.ReadKey();
 }
 
 bool CheckValidMove(Card topCard, Card bottomCard)
@@ -127,22 +171,37 @@ bool CheckValidMove(Card topCard, Card bottomCard)
         {
             if ((int)topCard.suit == (int)bottomCard.suit & topCard.value == bottomCard.value - 1)
             {
-                check = true;
+            check = (int)topCard.value < 1 ? false : true;
+            }
+            else if ((int)bottomCard.value < 1)
+            {
+            check = ((int)topCard.value == 13 && (int)bottomCard.value < 1) ? true : false;
+            }
+            else
+            {
+                check = false;
             }
         }
         else if (topCard != null && bottomCard == null)
         {
-            check = true;
+        DisplayText("I'm here",0,0);Console.ReadKey();
+            check = ((int)topCard.value == 13 && (int)bottomCard.value < 1) ? true : false;
+        }
+        else
+        {
+            check = false;
         }
 
-        return check;
+    return check;
 
 }
 
 void DisplayText(string textToDisplay, int posX = 0, int posY = 4 * Card.renderHeight + 2)
 {
+    Console.BackgroundColor = ConsoleColor.White; Console.ForegroundColor = ConsoleColor.Black;
     Console.SetCursorPosition(posX, posY);
     Console.WriteLine(textToDisplay);
+    Console.BackgroundColor = ConsoleColor.Black;
 }
 
 // for testing
@@ -150,7 +209,7 @@ void DisplayText(string textToDisplay, int posX = 0, int posY = 4 * Card.renderH
 Card[] CreateDebugCards(Card[] cards)
 {
     Card[] cardsDebug = cards;
-    cardsDebug[27] = cardsDebug[6];
+    cardsDebug[27] = cardsDebug[12];
     cardsDebug[20] = cardsDebug[5];
     cardsDebug[14] = cardsDebug[4];
     cardsDebug[9] = cardsDebug[3];
@@ -184,13 +243,9 @@ Card[] CreateCards()
     for (int k = 1; k < 52 + 1; k++)
     {
         int i = (k - 1) / 13;
-
-        cards[k - 1] = new Card();
-        cards[k - 1].faceUp = true;
-        cards[k - 1].value = (k % 13 == 0) ? (Value)13 : (Value)(k % 13);
-        cards[k - 1].suit = (Suit)i;
-
+        cards[k - 1] = new Card((Suit)i, (k % 13 == 0) ? (Value)13 : (Value)(k % 13),true);
     }
+    
     return cards;
 }
 
@@ -269,7 +324,7 @@ void RenderStack(Stack stack)
     {
         posX = 1 * Card.renderWidth + 2;
         posY = 0 * Card.renderHeight;
-        RenderCard(stack.GetCard(0), posX, posY + 1);
+        RenderCard(stack.GetCard(numberOfCards - 1), posX, posY + 1);        
     }
     else
     {
@@ -288,9 +343,22 @@ void RenderStacks(Stack[] stacks)
     for (int k = 0; k < 8; k++)
     {
         if (stacks.Length > 0)
+        {
+            if(k < 7)
+            {
+                //DisplayText($"{stacks[k].stackedCards.Count}", stacks[k].positionX, stacks[k].positionY - 1);
+                DisplayText($"{k+1}", stacks[k].positionX + 4, stacks[k].positionY - 2);
+            } 
+            else
+            {
+                DisplayText("[SPACE]", stacks[k].positionX + 11, stacks[k].positionY - 4);
+            }
             RenderStack(stacks[k]);
+        }
         else
+        {
             RenderEmpty(stacks[k].positionX, stacks[k].positionY);
+        }
     }
 
     if (stacks[12].numberOfCards > 0)
@@ -309,7 +377,6 @@ void RenderStacks(Stack[] stacks)
 Stack[] CreateStacks(Card[] cards)
 {
     
-    
     int numberOfCards = cards.Length;
 
     Stack[] stacks = new Stack[13];
@@ -322,6 +389,7 @@ Stack[] CreateStacks(Card[] cards)
     }
     y += x; x = numberOfCards - y;
     stacks[7] = new Stack(cards, x, y, 0); //pool
+
     stacks[8] = new Stack(cards, 0, 0, 10); //hearts        order
     stacks[9] = new Stack(cards, 0, 0, 20); //spades        might
     stacks[10] = new Stack(cards, 0, 0, 30); //clubs        be
@@ -330,17 +398,33 @@ Stack[] CreateStacks(Card[] cards)
 
     return stacks;
 }
+enum Inputs
+{
+    Zero = 48,
+    One = 49,
+    Two = 50,
+    Three = 51,
+    Four = 52,
+    Five = 53,
+    Six = 54,
+    Seven = 55,
+    Eight = 56,
+    Nine = 57,
+    Space = 32
+}
 
 enum Suit
 {
-    Hearts,
-    Clubs,
-    Spades,
-    Diamonds,
+    Empty = -1,
+    Hearts = 0,
+    Clubs = 1,
+    Spades = 2,
+    Diamonds = 3,
 }
 
 enum Value
 {
+    Empty = -1,
     Ace = 01,
     Two = 02,
     Three = 03,
@@ -370,15 +454,23 @@ enum Position
     FinishStackClubs = 20,
     FinishStackSpades = 30,
     FinishStackDiamonds = 40
-
 }
 
 class Stack
 {
+    public List<Card> stackedCards;
+    public int numberOfCards;
+    public Position position;
+    public int positionX, positionY;
+
+    private Card emptyCard = new Card((Suit)0,(Value)0,true);
+
     public Stack(Card[] cards, int numberOfCards, int firstCardNumber, int position)
     {
         this.numberOfCards = numberOfCards;
-        
+        this.position = (Position)position;
+        stackedCards = new List<Card>();
+
         if (position >= 0)
         {
                 positionX = (position - 1) * Card.renderWidth + position - 1;
@@ -389,36 +481,26 @@ class Stack
             positionX = 0;
             positionY = 0;
         }
-
-
-        this.position = (Position)position;
-        stackedCards = new List<Card>();
         
         for (int i = firstCardNumber; i < firstCardNumber + numberOfCards; i++)
         {
             Card card = cards[i];
             card.faceUp = (i == firstCardNumber + numberOfCards - 1 && position != 0) ? true : false;
             stackedCards.Add(card);
+
         }
 
         if (stackedCards.Count() == 0)
         {
-            // empty card
-            //RenderEmpty() ????
+            //stackedCards.Add(emptyCard);
+            //numberOfCards++;
         }
 
     }
 
-    public List<Card> stackedCards;
-    public int numberOfCards;
-    public Position position;
-    public int positionX, positionY;
-
-    public Card emptyCard = new Card();
-
     public Card GetCard(int positionOfCard)
     {
-        if (stackedCards.Count > 0)
+        if (numberOfCards > 0)
         {
             Card card = stackedCards[positionOfCard];
             return card;
@@ -430,11 +512,18 @@ class Stack
 
     }
 
+    public void TurnCard(Card card)
+    {
+        card.faceUp = !(card.faceUp);
+    }
+
     public void AddCard(Card card)
     {
-        if (stackedCards.Count > 0)
-        stackedCards.Last<Card>().faceUp = true;
-
+        if (numberOfCards > 0)
+        {
+            stackedCards.Last<Card>().faceUp = true;
+        }
+        
         stackedCards.Add(card);
         stackedCards.Last<Card>().faceUp = true;
         numberOfCards++;
@@ -443,16 +532,27 @@ class Stack
     public void RemoveCard(Card card)
     {
        
-        if (stackedCards.Count > 2)
+        if (numberOfCards > 0)
         {
             stackedCards.Remove(card);
-            stackedCards.Last<Card>().faceUp = true;
             numberOfCards--;
+            if (numberOfCards == 0)
+            {
+                //stackedCards.Add(emptyCard);
+                
+            }
+            else
+            {
+                stackedCards.Last<Card>().faceUp = true;
+            }
 
         }
-        else
+        else if (numberOfCards == 0 && stackedCards.Count > 0)
         {
             stackedCards = new List<Card>();
+            //stackedCards.Remove(card);
+            stackedCards.Add(emptyCard);
+
         }
 
     }
@@ -468,6 +568,13 @@ class Card
 
     public const int renderHeight = 7;
     public const int renderWidth = 9;
+
+    public Card(Suit suit, Value value, bool faceUp)
+    {
+        this.suit = suit;
+        this.value = value;
+        this.faceUp = faceUp;
+    }
 
     public string[] Render()
     {
@@ -528,6 +635,8 @@ class Card
         }
         else
         {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             return new string[]
             {
                 $"┌───────┐",
