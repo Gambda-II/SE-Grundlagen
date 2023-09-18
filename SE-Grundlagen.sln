@@ -17,9 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessTheNumber", "GuessTheN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VariablenUndDatentypen", "VariablenUndDatentypen\VariablenUndDatentypen.csproj", "{4070D9F0-FA90-4B30-B18B-CC5F83B50134}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Klondike", "Klondike\Klondike.csproj", "{10243621-20F4-49D4-A396-3F9EBFC180AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Klondike", "Klondike\Klondike.csproj", "{10243621-20F4-49D4-A396-3F9EBFC180AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections", "Collections\Collections.csproj", "{688418E2-90F1-4A43-B9BC-7E960025252B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collections", "Collections\Collections.csproj", "{688418E2-90F1-4A43-B9BC-7E960025252B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjektStruktur", "ProjektStruktur\ProjektStruktur.csproj", "{789B98A1-7356-49F7-A854-0897BA7960B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-cli", "dotnet-cli\dotnet-cli.csproj", "{3FC2E79A-8F57-4037-8BF1-EC9EE89CD8F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{688418E2-90F1-4A43-B9BC-7E960025252B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{688418E2-90F1-4A43-B9BC-7E960025252B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{688418E2-90F1-4A43-B9BC-7E960025252B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{789B98A1-7356-49F7-A854-0897BA7960B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{789B98A1-7356-49F7-A854-0897BA7960B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{789B98A1-7356-49F7-A854-0897BA7960B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{789B98A1-7356-49F7-A854-0897BA7960B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC2E79A-8F57-4037-8BF1-EC9EE89CD8F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC2E79A-8F57-4037-8BF1-EC9EE89CD8F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC2E79A-8F57-4037-8BF1-EC9EE89CD8F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC2E79A-8F57-4037-8BF1-EC9EE89CD8F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
