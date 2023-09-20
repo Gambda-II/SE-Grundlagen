@@ -25,10 +25,11 @@ void CreateGame()
 
 
 
-    Card[] cards = CreateShuffledCards(CreateCards());
+    //Card[] cards = CreateShuffledCards(CreateCards());
     // this is for testing, uncomment above and delete below
     //Card[] cards = CreateDebugCards(CreateCards());
     //Card[] cards = CreateShuffledCards(CreateCards());
+    Card[] cards = CreateWinCards(CreateCards());
 
     // using this instead of new Card[0]; I'm not even using this?
     Card[] emptyCards = Array.Empty<Card>();
@@ -52,7 +53,7 @@ void CreateGame()
             Console.ReadKey();
         }
 
-        DisplayText("Waiting for input");
+        DisplayText("Waiting for input: {SPACE, 0, 1, ..., 7}",0,0);
         ConsoleKeyInfo pressedKey = Console.ReadKey(true);
         int pressedNumber = (int)pressedKey.KeyChar;
 
@@ -62,7 +63,7 @@ void CreateGame()
 
 
                 Stack startingStack = stacks[12];
-                DisplayText("Waiting for another input.");
+                DisplayText("Waiting for another input: { 0, 1, ..., 7}",0,0);
                 pressedKey = Console.ReadKey(true);
                 int oldNumber = pressedNumber;
                 pressedNumber = (int)pressedKey.KeyChar;
@@ -113,7 +114,7 @@ void CreateGame()
                 {
 
                     startingStack = ChooseStack(stacks, cards, pressedNumber);
-                    DisplayText("Waiting for another input.");
+                    DisplayText("Waiting for another input: {1, 2, 3, ..., 7}");
                     pressedKey = Console.ReadKey(true);
                     oldNumber = pressedNumber;
                     pressedNumber = (int)pressedKey.KeyChar;
@@ -181,15 +182,15 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
     int diff = 0;
     while (trying && indexToFind > 0 & startingStack.GetCard(indexToFind).faceUp)
     {
-        Console.WriteLine("This is a test \n");
+        
         indexToFind--;
         diff++;
         if ((int)startingStack.GetCard(indexToFind).value == (int)startingStack.GetCard(indexStart).value + diff )
         {
             if (startingStack.GetCard(indexToFind).suit == startingStack.GetCard(indexStart).suit)
             {
-                Console.WriteLine(indexStart + " and " + indexToFind);
-                DisplayText($"{indexStart} up to {indexToFind}");
+                //Console.WriteLine(indexStart + " and " + indexToFind);
+                //DisplayText($"{indexStart} up to {indexToFind}");
                 //Console.ReadKey();
             }
             else
@@ -213,7 +214,7 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
     // hier voll viel doppelt und funktioniert aber HOFFENTLICH immer
     if ((int)startingStack.position <= 7 && (int)startingStack.position != 0 && (int)targetStack.position > 9)
     {
-        DisplayText("IF");
+        
         //Console.ReadKey();
         if (CheckValidMove(targetCard, startCard) || allow)
         {
@@ -234,18 +235,18 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
             }
 
             targetStack.AddCard(startCard);
-            DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
-            DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
+            //DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
+            //DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
 
         }
         else
         {
-            DisplayText($"Can not move cards IF.");
+            DisplayText($"Can not move cards.");
         }
     }
     else if ((int)targetStack.position <= 7 && (int)targetStack.position >= 1 && (int)startingStack.position > 9)
     {
-        DisplayText("ELSE IF");
+        
         if (CheckValidMove(startCard, targetCard) || allow)
         {
             startCard.faceUp = true;
@@ -265,21 +266,21 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
             }
 
             targetStack.AddCard(startCard);
-            DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
-            DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
+            //DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
+            //DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
 
         }
         else
         {
-            DisplayText($"Can not move cards ELSE IF.");
+            DisplayText($"Can not move cards.");
         }
     }
     //implement moving stacks
     else
     {
         startCard = startingStack.GetCard(indexToFind);
-        DisplayText($"ELSE {(int)startingStack.position} {(int)targetStack.position}");
-        DisplayText($"{indexStart}{indexToFind}{startCard.value}{startCard.suit}");
+        //DisplayText($"ELSE {(int)startingStack.position} {(int)targetStack.position}");
+        //DisplayText($"{indexStart}{indexToFind}{startCard.value}{startCard.suit}");
         if (CheckValidMove(startCard, targetCard) || allow)
         {
             startCard.faceUp = true;
@@ -313,8 +314,8 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
             }
 
             
-            DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
-            DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
+            //DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
+            //DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
 
         }
         else
@@ -346,7 +347,7 @@ bool CheckValidMove(Card topCard, Card bottomCard)
     }
     else if (topCard != null && bottomCard == null)
     {
-        DisplayText("I'm here", 0, 0); Console.ReadKey();
+        //DisplayText("I'm here", 0, 0); Console.ReadKey();
         check = ((int)topCard.value == 13 && (int)bottomCard.value < 1) ? true : false;
     }
     else
@@ -378,6 +379,52 @@ Card[] CreateDebugCards(Card[] cards)
     cardsDebug[5] = cardsDebug[2];
     cardsDebug[2] = cardsDebug[1];
     return cardsDebug;
+}
+
+Card[] CreateWinCards(Card[] cards)
+{
+    Card[] winCards = new Card[51];
+    winCards[0] = cards[0];
+    
+    winCards[2] = cards[1];
+    winCards[1] = cards[2];
+
+    winCards[3] = cards[5];
+    winCards[4] = cards[4];
+    winCards[5] = cards[3];
+
+    winCards[6] = cards[9];
+    winCards[7] = cards[8];
+    winCards[8] = cards[7];
+    winCards[9] = cards[6];
+
+    winCards[10] = cards[14];
+    winCards[11] = cards[13];
+    winCards[12] = cards[12];
+    winCards[13] = cards[11];
+    winCards[14] = cards[10];
+
+    winCards[15] = cards[20];
+    winCards[16] = cards[19];
+    winCards[17] = cards[18];
+    winCards[18] = cards[17];
+    winCards[19] = cards[16];
+    winCards[20] = cards[15];
+
+    winCards[21] = cards[27];
+    winCards[22] = cards[26];
+    winCards[23] = cards[25];
+    winCards[24] = cards[24];
+    winCards[25] = cards[23];
+    winCards[26] = cards[22];
+    winCards[27] = cards[21];
+
+    for (int k = 28;k < 51;k++)
+    {
+        winCards[k] = cards[k];
+    }
+
+    return winCards;
 }
 Card[] CreateShuffledCards(Card[] cards)
 {
@@ -514,15 +561,15 @@ void RenderStacks(Stack[] stacks)
         {
             if (k < 7)
             {
-                //remove this displaytext 
-                DisplayText($"{stacks[k].stackedCards.Count}", stacks[k].positionX, stacks[k].positionY - 1);
+                
+                //DisplayText($"{stacks[k].stackedCards.Count}", stacks[k].positionX, stacks[k].positionY - 1);
 
                 DisplayText($"{k + 1}", stacks[k].positionX + 4, stacks[k].positionY - 2);
             }
             else
             {
-                //remove this displaytext 
-                DisplayText($"{stacks[k].stackedCards.Count}",0,0);
+                
+                //DisplayText($"{stacks[k].stackedCards.Count}",0,0);
 
                 DisplayText("[SPACE]", stacks[k].positionX + 11, stacks[k].positionY - 4);
             }
@@ -533,8 +580,8 @@ void RenderStacks(Stack[] stacks)
             RenderEmpty(stacks[k].positionX, stacks[k].positionY);
         }
     }
-    //remove this displaytext 
-    DisplayText($"{stacks[12].stackedCards.Count}", 10, 0);
+    
+    //DisplayText($"{stacks[12].stackedCards.Count}", 10, 0);
 
     if (stacks[12].numberOfCards > 0)
     {
@@ -549,8 +596,8 @@ void RenderStacks(Stack[] stacks)
     for (int k = 30; k < 61; k = k + 10)
     {
         i += 1;
-        //remove int i and display text
-        DisplayText($"{stacks[i].stackedCards.Count}",k,0);
+        
+        //DisplayText($"{stacks[i].stackedCards.Count}",k,0);
 
         if (stacks[i].stackedCards.Count > 0)
         {
