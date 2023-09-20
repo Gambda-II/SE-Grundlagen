@@ -177,29 +177,33 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
     //pick visible card from the stack with highest value, but suiting suit
     int indexStart = startingStack.stackedCards.Count > 0 ? startingStack.numberOfCards - 1 : startingStack.stackedCards.Count - 1;
     int indexToFind = indexStart;
-    while (indexToFind > 0 & startingStack.GetCard(indexToFind).faceUp)
+    bool trying = true;
+    int diff = 0;
+    while (trying && indexToFind > 0 & startingStack.GetCard(indexToFind).faceUp)
     {
         Console.WriteLine("This is a test \n");
         indexToFind--;
-
-        if ((int)startingStack.GetCard(indexToFind).value == (int)startingStack.GetCard(indexStart).value + 1 )
+        diff++;
+        if ((int)startingStack.GetCard(indexToFind).value == (int)startingStack.GetCard(indexStart).value + diff )
         {
             if (startingStack.GetCard(indexToFind).suit == startingStack.GetCard(indexStart).suit)
             {
                 Console.WriteLine(indexStart + " and " + indexToFind);
                 DisplayText($"{indexStart} up to {indexToFind}");
-                Console.ReadKey();
+                //Console.ReadKey();
             }
             else
             {
-                indexToFind = indexStart;
-                break;
+                indexToFind++;
+                trying = false;
+               // break;
             }
         }
         else
         {
-            indexToFind = indexStart;
-            break;
+            indexToFind++;
+            trying = false;
+            //break;
         }
     }
     //
@@ -210,7 +214,7 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
     if ((int)startingStack.position <= 7 && (int)startingStack.position != 0 && (int)targetStack.position > 9)
     {
         DisplayText("IF");
-        Console.ReadKey();
+        //Console.ReadKey();
         if (CheckValidMove(targetCard, startCard) || allow)
         {
             startCard.faceUp = true;
@@ -303,9 +307,6 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
                 targetStack.AddCard(startCard);
             }
 
-            //startingStack.RemoveCard(startCard);
-            //targetStack.AddCard(startCard);
-
             if (startingStack.numberOfCards < 1)
             {
                 startingStack.AddCard(new Card((Suit)0, (Value)0, true));
@@ -322,7 +323,7 @@ void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
         }
     }
 
-    Console.ReadKey();
+    //Console.ReadKey();
 }
 
 bool CheckValidMove(Card topCard, Card bottomCard)
