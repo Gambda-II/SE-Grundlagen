@@ -117,4 +117,6 @@ namespace TestAlgorithms
             Assert.Equal(-1, CardAlgorithm.BinaryFindCardLocation(cards, query));
         }
     }
+
+    
 }

@@ -3,25 +3,24 @@
 ## Pseudocode für 2FA
 
 ```text
-INPUTS: username, password
-OUTPUTS: inputsBool?
+INPUTS: string: username, string: password
+OUTPUTS: boolean:
 
 IF username IS wrong OR password IS wrong
-SET inputsBool TO false
-RETURN inputsBool
-ELSE GET OTP 
-    IF OTP IS correct
-    SET inputsBool TO true
-    RETURN inputsBool
+    RETURN false
+ELSE
+    GET OTP
+    INPUT otp
+    IF opt IS OTP
+    RETURN true
     ELSE
-    SET inputsBool TO false
-    RETURN inputsBool
+    RETURN false
 ```
 
 ## Pseudocode für Rezeptfarbe
 ```
-INPUTS: versicherungsart, arzneimittelart
-OUTPUTS: rezeptfarbe
+INPUTS: string: versicherungsart, string: arzneimittelart
+OUTPUTS: string: rezeptfarbe
 
 CHECK versicherungsart
 IF versicherungsart IS gesetzlich
@@ -38,7 +37,45 @@ ELSE
         SET rezeptfarbe TO blau
 
 RETURN rezeptfarbe
-
 ```
 
 ## Pseudocode für Fakultät
+
+```
+INPUTS: integer: number
+OUTPUTS: integer: factorial
+
+IF number is negativ
+RETURN -1
+
+IF number is zero
+RETURN 1
+
+SET factorial TO number
+SET number TO numer - 1S
+WHILE number is bigger than one
+    SET number TO number - 1
+    SET factorial TO factorial * number
+REPEAT WHILE
+
+RETURN factorial
+```
+Please note. The following pseudo code ist André certified.
+```text
+Gib eine Zahl ein und speicher diese unter der Variable N
+Initalisiere eine Variable F
+
+Wenn N kleiner als 1
+    Gib -1 zurück
+
+Wenn N gleich 0
+    Gib 1 zurück
+
+Sonst
+    Setze F gleich N
+    Wiederhole bis N gleich 1
+        Verkleinere N um 1
+        Berechne F * N und setze F als das Ergebnis
+    
+    Gib F zurück
+```
