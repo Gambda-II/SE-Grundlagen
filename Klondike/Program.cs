@@ -8,13 +8,6 @@ using System.Linq;
 
 CreateGame();
 
-
-// moving cards in the bottom works, but needs some testing
-// moving cards in the top does not work
-// moving a stack of cards does not work
-// stack of cards maybe need a MAX VALUE to move
-// moving to finishStacks does not work
-
 void CreateGame()
 {
 
@@ -53,311 +46,26 @@ void CreateGame()
             Console.ReadKey();
         }
 
-        DisplayText("Waiting for input: {SPACE, 0, 1, ..., 7}",0,0);
-        ConsoleKeyInfo pressedKey = Console.ReadKey(true);
-        int pressedNumber = (int)pressedKey.KeyChar;
-
-        switch (pressedNumber)
-        {
-            case (int)Inputs.Zero:
-
-
-                Stack startingStack = stacks[12];
-                DisplayText("Waiting for another input: { 0, 1, ..., 7}",0,0);
-                pressedKey = Console.ReadKey(true);
-                int oldNumber = pressedNumber;
-                pressedNumber = (int)pressedKey.KeyChar;
-
-                if (oldNumber == pressedNumber)
-                {
-                    int targetStackNumber = (int)startingStack.GetCard(startingStack.stackedCards.Count - 1).suit;
-                    Stack targetStack = stacks[targetStackNumber + 8];
-                    if ((int)targetStack.GetCard(targetStack.stackedCards.Count - 1).value < 1 && (int)startingStack.GetCard(startingStack.stackedCards.Count -1).value == 1)
-                    {
-                        MoveCard(startingStack, targetStack, true);
-                    }
-                    else if((int)targetStack.GetCard(targetStack.stackedCards.Count - 1).value > 0)
-                    {
-                        MoveCard(startingStack, targetStack);
-                    }
-                }
-                else if (pressedNumber >= (int)Inputs.One && pressedNumber <= (int)Inputs.Seven)
-                {
-                    Stack targetStack = ChooseStack(stacks, cards, pressedNumber);
-                    MoveCard(startingStack,targetStack);
-                }
-                else
-                {
-
-                }
-                break;
-            case (int)Inputs.Space:
-                if (stacks[7].GetCard(0).value > 0)
-                {
-                    stacks[12].GetCard(stacks[12].stackedCards.Count - 1).faceUp = false;
-                    MoveCard(stacks[7], stacks[12], true);
-                }
-                else
-                {
-                    stacks[7].RemoveCard(stacks[7].GetCard(0));
-                    int maxIterations = stacks[12].stackedCards.Count;
-                    for (int k = 0; k < maxIterations; k++)
-                    {
-                        stacks[12].GetCard(0).faceUp = false;
-                        MoveCard(stacks[12], stacks[7], true);
-                    }
-                    stacks[7].GetCard(0).faceUp = false;
-                }
-                break;
-            default:
-                if ((int)Inputs.One <= pressedNumber && pressedNumber <= (int)Inputs.Seven)
-                {
-
-                    startingStack = ChooseStack(stacks, cards, pressedNumber);
-                    DisplayText("Waiting for another input: {1, 2, 3, ..., 7}");
-                    pressedKey = Console.ReadKey(true);
-                    oldNumber = pressedNumber;
-                    pressedNumber = (int)pressedKey.KeyChar;
-
-                    if (oldNumber == pressedNumber)
-                    {
-                        int targetStackNumber = (int)startingStack.GetCard(startingStack.stackedCards.Count - 1).suit;
-                        Stack targetStack = stacks[targetStackNumber + 8];
-                        if ((int)targetStack.GetCard(targetStack.stackedCards.Count - 1).value < 1 && (int)startingStack.GetCard(startingStack.stackedCards.Count - 1).value == 1)
-                        {
-                            MoveCard(startingStack, targetStack,true);
-                        }
-                        else
-                        {
-                            MoveCard(startingStack, targetStack);
-                        }
-                        
-                    }
-                    else if ((int)Inputs.One <= pressedNumber && pressedNumber <= (int)Inputs.Seven)
-                    {
-                        Stack targetStack = ChooseStack(stacks, cards, pressedNumber);
-                        MoveCard(startingStack, targetStack);
-                    }
-                    else
-                    {
-                        DisplayText("Can't move cards.");
-                    }
-                }
-                else
-                    DisplayText("Invalid input.");
-
-                break;
-
-        }
-
         Console.Clear();
         RenderStacks(stacks);
+
+        MoveCard();
     }
 
 
 
 }
 
-
-Stack ChooseStack(Stack[] stacks, Card[] cards, int input)
+void MoveCard()
 {
-    // This can be deleted
-    //DisplayText("Waiting for input");
+    int pressedKey = Console.ReadKey().KeyChar;
 
-    Stack choosedStack = new Stack(cards, 0, 0, -2); ;
+    if (pressedKey == (int)Inputs.Space)
+    {
 
-    return choosedStack = stacks[input - (int)Inputs.One]; 
+    }
 }
 
-
-void MoveCard(Stack startingStack, Stack targetStack, bool allow = false)
-{
-
-    Card startCard = startingStack.stackedCards.Count > 0 ? startingStack.GetCard(startingStack.numberOfCards - 1) : startingStack.GetCard(startingStack.stackedCards.Count - 1);
-
-    //pick visible card from the stack with highest value, but suiting suit
-    int indexStart = startingStack.stackedCards.Count > 0 ? startingStack.numberOfCards - 1 : startingStack.stackedCards.Count - 1;
-    int indexToFind = indexStart;
-    bool trying = true;
-    int diff = 0;
-    while (trying && indexToFind > 0 & startingStack.GetCard(indexToFind).faceUp)
-    {
-        
-        indexToFind--;
-        diff++;
-        if ((int)startingStack.GetCard(indexToFind).value == (int)startingStack.GetCard(indexStart).value + diff )
-        {
-            if (startingStack.GetCard(indexToFind).suit == startingStack.GetCard(indexStart).suit)
-            {
-                //Console.WriteLine(indexStart + " and " + indexToFind);
-                //DisplayText($"{indexStart} up to {indexToFind}");
-                //Console.ReadKey();
-            }
-            else
-            {
-                indexToFind++;
-                trying = false;
-               // break;
-            }
-        }
-        else
-        {
-            indexToFind++;
-            trying = false;
-            //break;
-        }
-    }
-    //
-
-    Card targetCard = targetStack.stackedCards.Count > 0 ? targetStack.GetCard(targetStack.numberOfCards - 1) : targetStack.GetCard(targetStack.stackedCards.Count - 1);
-
-    // hier voll viel doppelt und funktioniert aber HOFFENTLICH immer
-    if ((int)startingStack.position <= 7 && (int)startingStack.position != 0 && (int)targetStack.position > 9)
-    {
-        
-        //Console.ReadKey();
-        if (CheckValidMove(targetCard, startCard) || allow)
-        {
-            startCard.faceUp = true;
-            if (targetCard != null)
-            {
-                if ((int)targetCard.value < 1)
-                {
-                    targetStack.RemoveCard(targetStack.GetCard(0));
-                }
-            }
-
-            startingStack.RemoveCard(startCard);
-
-            if (startingStack.numberOfCards < 1)
-            {
-                startingStack.AddCard(new Card((Suit)0, (Value)0, true));
-            }
-
-            targetStack.AddCard(startCard);
-            //DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
-            //DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
-
-        }
-        else
-        {
-            DisplayText($"Can not move cards.");
-        }
-    }
-    else if ((int)targetStack.position <= 7 && (int)targetStack.position >= 1 && (int)startingStack.position > 9)
-    {
-        
-        if (CheckValidMove(startCard, targetCard) || allow)
-        {
-            startCard.faceUp = true;
-            if (targetCard != null)
-            {
-                if ((int)targetCard.value < 1)
-                {
-                    targetStack.RemoveCard(targetStack.GetCard(0));
-                }
-            }
-
-            startingStack.RemoveCard(startCard);
-
-            if (startingStack.numberOfCards < 1)
-            {
-                startingStack.AddCard(new Card((Suit)0, (Value)0, true));
-            }
-
-            targetStack.AddCard(startCard);
-            //DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
-            //DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
-
-        }
-        else
-        {
-            DisplayText($"Can not move cards.");
-        }
-    }
-    //implement moving stacks
-    else
-    {
-        startCard = startingStack.GetCard(indexToFind);
-        //DisplayText($"ELSE {(int)startingStack.position} {(int)targetStack.position}");
-        //DisplayText($"{indexStart}{indexToFind}{startCard.value}{startCard.suit}");
-        if (CheckValidMove(startCard, targetCard) || allow)
-        {
-            startCard.faceUp = true;
-            if (targetCard != null)
-            {
-                if ((int)targetCard.value < 1)
-                {
-                    targetStack.RemoveCard(targetStack.GetCard(0));
-                }
-            }
-
-            if (startingStack.position != Position.PoolStack && targetStack.position != Position.PoolStack)
-            {
-                for (int i = indexToFind; i <= indexStart;)
-                {
-                    indexStart--;
-                    startCard = startingStack.GetCard(i);
-                    startingStack.RemoveCard(startCard);
-                    targetStack.AddCard(startCard);
-                }
-            }
-            else
-            {
-                startingStack.RemoveCard(startCard);
-                targetStack.AddCard(startCard);
-            }
-
-            if (startingStack.numberOfCards < 1)
-            {
-                startingStack.AddCard(new Card((Suit)0, (Value)0, true));
-            }
-
-            
-            //DisplayText($"Moved card {(int)startCard.value} {startCard.suit} from {startingStack.position} to {targetStack.position}", 10, 10 + targetStack.numberOfCards);
-            //DisplayText($"With {startingStack.stackedCards.Count} and {targetStack.stackedCards.Count} number of cards", 30, 10);
-
-        }
-        else
-        {
-            //DisplayText($"Can not move cards ELSE.");
-        }
-    }
-
-    //Console.ReadKey();
-}
-
-bool CheckValidMove(Card topCard, Card bottomCard)
-{
-    bool check = false;
-    if (topCard != null && bottomCard != null)
-    {
-        if ((int)topCard.suit == (int)bottomCard.suit & topCard.value == bottomCard.value - 1)
-        {
-            check = (int)topCard.value < 1 ? false : true;
-        }
-        else if ((int)bottomCard.value < 1)
-        {
-            check = ((int)topCard.value == 13 && (int)bottomCard.value < 1) ? true : false;
-        }
-        else
-        {
-            check = false;
-        }
-    }
-    else if (topCard != null && bottomCard == null)
-    {
-        //DisplayText("I'm here", 0, 0); Console.ReadKey();
-        check = ((int)topCard.value == 13 && (int)bottomCard.value < 1) ? true : false;
-    }
-    else
-    {
-        check = false;
-    }
-
-    return check;
-
-}
 
 void DisplayText(string textToDisplay, int posX = 0, int posY = 4 * Card.renderHeight + 2)
 {
@@ -733,8 +441,6 @@ class Stack
 
         if (stackedCards.Count() == 0)
         {
-            //stackedCards.Add(emptyCard);
-            //numberOfCards++;
         }
 
     }
@@ -779,8 +485,7 @@ class Stack
             numberOfCards--;
             if (numberOfCards == 0)
             {
-                //stackedCards.Add(emptyCard);
-
+                // remove this later
             }
             else
             {
@@ -791,7 +496,6 @@ class Stack
         else if (numberOfCards == 0 && stackedCards.Count > 0)
         {
             stackedCards = new List<Card>();
-            //stackedCards.Remove(card);
             stackedCards.Add(emptyCard);
 
         }
@@ -860,7 +564,6 @@ class Card
 
             }
             Console.ForegroundColor = ConsoleColor.Black;
-
             return new string[]
             {
                 $"┌───────┐",
@@ -872,7 +575,6 @@ class Card
                 $"|    {b}|",
                 $"└───────┘",
             };
-
         }
         else
         {
@@ -890,8 +592,5 @@ class Card
                 $"└───────┘",
             };
         }
-
-
     }
-
 }
