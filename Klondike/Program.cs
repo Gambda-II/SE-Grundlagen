@@ -47,22 +47,9 @@ void CreateGame()
     while (isPlaying)
     {
         isPlaying = (stacks[8].stackedCards.Count + stacks[9].stackedCards.Count + stacks[10].stackedCards.Count + stacks[11].stackedCards.Count) < 13 * 4;
-        if (isPlaying)
+        if (!isPlaying)
         {
-            Console.Clear();
-            for (int k = 0; k < 500; k++)
-            {
-                Array colors = Enum.GetValues(typeof(ConsoleColor));
-                Random randomNumber = new Random();
-                ConsoleColor randomColor = (ConsoleColor)colors.GetValue(randomNumber.Next(colors.Length));
-                Console.BackgroundColor = randomColor;
-                Console.Write("You win! ");
-                System.Threading.Thread.Sleep(1);
-            }
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.Clear();
-            DisplayAllCards(karten,false);
-            Console.ReadKey();
+            DisplayWinScreen(karten);
         }
 
         while (waitingForInput)
@@ -397,6 +384,24 @@ void DisplayText(string textToDisplay, int posX = 0, int posY = 4 * Card.renderH
     Console.SetCursorPosition(posX, posY);
     Console.WriteLine(textToDisplay);
     Console.BackgroundColor = ConsoleColor.Black;
+}
+
+void DisplayWinScreen(Card[] karten)
+{
+    Console.Clear();
+    for (int k = 0; k < 500; k++)
+    {
+        Array colors = Enum.GetValues(typeof(ConsoleColor));
+        Random randomNumber = new Random();
+        ConsoleColor randomColor = (ConsoleColor)colors.GetValue(randomNumber.Next(colors.Length));
+        Console.BackgroundColor = randomColor;
+        Console.Write("You win! ");
+        System.Threading.Thread.Sleep(1);
+    }
+    Console.BackgroundColor = ConsoleColor.Black;
+    Console.Clear();
+    DisplayAllCards(karten, false);
+    Console.ReadKey();
 }
 
 Card[] CreateShuffledCards(Card[] cards)
