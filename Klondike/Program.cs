@@ -89,10 +89,6 @@ void CreateGame()
                         //Move finish to bottom
                         if ((int)secondPressed > 0 && (int)secondPressed < 8)
                         {
- 
-                            Stack targetStack = stacks[secondPressed - 49];
-                            int suitNumber = (int)targetStack.GetLastCard().suit;
-                            }
 
                         }
                         break;
