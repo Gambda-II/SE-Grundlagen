@@ -1,7 +1,8 @@
-﻿
-namespace Algorithms;
+﻿namespace Algorithms;
+
 public static class MathAlgorithm
 {
+
     public static int Factorial(int n)
     {
         if (n < 0)
@@ -32,5 +33,24 @@ public static class MathAlgorithm
         }
         return k;
     }
-}
 
+    public static bool isPrime(int number)
+    {
+        bool isChecked = true;
+        if (number < 2)
+            return false;
+        if (number == 2 || number == 3)
+            return true;
+        if (number % 2 == 0)
+            return false;
+
+        for (int k = 3; k <= Math.Sqrt(number); k = k + 2)
+        {
+            if (number % k == 0)
+                return false;
+        }
+
+        return isChecked;
+    }
+
+}
