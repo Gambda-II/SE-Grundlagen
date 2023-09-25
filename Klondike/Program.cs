@@ -11,11 +11,11 @@ using System.Runtime.Intrinsics.X86;
 using System.Security;
 
 // BUGS
-// Can not move a stack of cards if they are the whole stack ? Fixed ?
-// Can move wrong cards from empty to bottom
+// Can not move a stack of cards if they are the whole stack FIXED
+// Can move wrong cards from empty to bottom FIXED
 // Sometimes the whole screen turns blue
-// Can not move a stack starting with king
-// Crashes when trying to move from bottom to empty
+// Can not move a stack starting with king FIXED
+// Crashes when trying to move from bottom to empty FIXED
 
 // TO ADD
 // Can move cards from finish to bottom
@@ -89,12 +89,11 @@ void CreateGame()
                         //Move finish to bottom
                         if ((int)secondPressed > 0 && (int)secondPressed < 8)
                         {
-                            /*
+ 
                             Stack targetStack = stacks[secondPressed - 49];
                             int suitNumber = (int)targetStack.GetLastCard().suit;
-                            Stack finishStack = stacks[8+suitNumber];
-                            MoveCardToBottom(finishStack,targetStack,suitNumber);
-                            */
+                            }
+
                         }
                         break;
                     default:
