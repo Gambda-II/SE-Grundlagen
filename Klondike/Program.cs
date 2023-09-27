@@ -18,6 +18,7 @@ using System.Security;
 // Crashes when trying to move from bottom to empty FIXED
 
 // TO ADD
+// How to play: Add Display that shows how to move cards
 // Can move cards from finish to bottom
 // Can undo 
 
@@ -605,6 +606,13 @@ void RenderStacks(Stack[] stacks)
             RenderEmpty(k, 1);
         }
     }
+
+    DisplayText("0", 14, 10);
+    DisplayText("How to play:", 1, 40);
+    DisplayText("Choose a number (0,1,...,7) from where you want to move,", 1, 41);
+    DisplayText("then another number (1,2,...,7) to where you want to move.", 1, 42);
+    DisplayText("Press SPACE to get another card",1,43);
+    DisplayText("Press the same number twice to finish a card", 1, 44);
 }
 
 Stack[] CreateStacks(Card[] cards)
