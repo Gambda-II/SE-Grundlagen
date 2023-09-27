@@ -559,14 +559,14 @@ void RenderStacks(Stack[] stacks)
             if (k < 7)
             {
 
-                DisplayText($"C:{stacks[k].stackedCards.Count} N:{stacks[k].numberOfCards}", stacks[k].positionX, stacks[k].positionY - 1);
+                //DisplayText($"C:{stacks[k].stackedCards.Count} N:{stacks[k].numberOfCards}", stacks[k].positionX, stacks[k].positionY - 1);
 
                 DisplayText($"{k + 1}", stacks[k].positionX + 4, stacks[k].positionY - 2);
             }
             else
             {
 
-                DisplayText($"C:{stacks[k].stackedCards.Count} N:{stacks[k].numberOfCards}", 0, 0);
+                //DisplayText($"C:{stacks[k].stackedCards.Count} N:{stacks[k].numberOfCards}", 0, 0);
 
                 DisplayText("[SPACE]", stacks[k].positionX + 11, stacks[k].positionY - 4);
             }
@@ -578,7 +578,7 @@ void RenderStacks(Stack[] stacks)
         }
     }
 
-    DisplayText($"C:{stacks[12].stackedCards.Count} N:{stacks[12].numberOfCards}", 10, 0);
+    //DisplayText($"C:{stacks[12].stackedCards.Count} N:{stacks[12].numberOfCards}", 10, 0);
 
     if (stacks[12].numberOfCards > 0)
     {
@@ -594,7 +594,7 @@ void RenderStacks(Stack[] stacks)
     {
         i += 1;
 
-        DisplayText($"C:{stacks[i].stackedCards.Count} N:{stacks[i].numberOfCards}", k, 0);
+        //DisplayText($"C:{stacks[i].stackedCards.Count} N:{stacks[i].numberOfCards}", k, 0);
 
         if (stacks[i].stackedCards.Count > 0)
         {
