@@ -2,13 +2,6 @@
 //  └ ─ ┘ │ ▀ ▄ ▓ ▒ ░ 
 //  ♠ ♣ ♥ ♦
 
-using System;
-using System.ComponentModel.Design;
-using System.ComponentModel.Design.Serialization;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Security;
 
 // BUGS
 // Can not move a stack of cards if they are the whole stack FIXED
@@ -16,12 +9,18 @@ using System.Security;
 // Sometimes the whole screen turns blue
 // Can not move a stack starting with king FIXED
 // Crashes when trying to move from bottom to empty FIXED
+// Weird movement happens sometimes, cards get mixed up sometimes
 
 // TO ADD
-// How to play: Add Display that shows how to move cards
+// How to play: Add Display that shows how to move cards ADDED
 // Can move cards from finish to bottom
-// Can undo 
+// Can undo ADDED
 
+Stack<Stack[]> gameStateStack = new Stack<Stack[]>();
+Card[] karten = CreateCards();
+Card[] cards = CreateShuffledCards(karten);
+Stack[] stacks = CreateStacks(cards);
+TakeSnapshot(stacks);
 CreateGame();
 
 void CreateGame()
@@ -29,26 +28,30 @@ void CreateGame()
 
     Console.Clear();
 
-    Console.WindowHeight = 5 * (Card.renderHeight + 5);
-    Console.WindowWidth = 7 * (Card.renderWidth + 1);
-    Card[] karten = CreateCards();
-    Card[] cards = CreateShuffledCards(karten);
+    Console.WindowHeight = 5 * (Card.renderHeight + 3);
+    Console.WindowWidth = 6 * (Card.renderWidth + 3);
+
 
     // using this instead of new Card[0]; I'm not even using this?
     Card[] emptyCards = Array.Empty<Card>();
     Card emptyCard = new Card((Suit)(-1), (Value)(-1), true);
-    Stack[] stacks = CreateStacks(cards);
+    //
+    //Stack[] oldStacks = CopyStack(stacks.ToArray());
 
     RenderStacks(stacks);
 
     Console.CursorVisible = false;
 
-    bool isPlaying = true, waitingForInput = true;
+    bool isPlaying = true, waitingForInput = true, isShowing = true, isGameWon = false;
+
 
     while (isPlaying)
     {
-        isPlaying = (stacks[8].stackedCards.Count + stacks[9].stackedCards.Count + stacks[10].stackedCards.Count + stacks[11].stackedCards.Count) < 13 * 4;
-        if (!isPlaying)
+        stacks = gameStateStack.ElementAt(gameStateStack.Count - 1);
+
+        ToggleHelpText(isShowing);
+        isGameWon = (stacks[8].stackedCards.Count + stacks[9].stackedCards.Count + stacks[10].stackedCards.Count + stacks[11].stackedCards.Count) < 13 * 4;
+        if (!isGameWon)
         {
             DisplayWinScreen(karten);
         }
@@ -68,36 +71,59 @@ void CreateGame()
                 {
                     case 0:
                         //Move pool and empty
+                        TakeSnapshot(stacks);
                         MoveCardAtTheTop(stacks[7], stacks[12]);
                         break;
                     case 1:
                         //Move empty to finish
+                        TakeSnapshot(stacks);
                         MoveCardToFinish(stacks, stacks[12]);
                         break;
                     case 2:
-                        MoveCardToBottom(stacks[12], stacks[secondPressed - 49], firstPressed);
                         //Move empty to bottom
+                        TakeSnapshot(stacks);
+                        MoveCardToBottom(stacks[12], stacks[secondPressed - 49], firstPressed);
                         break;
                     case 3:
                         //Move bottom to finish
+                        TakeSnapshot(stacks);
                         MoveCardToFinish(stacks, stacks[firstPressed - 49]);
                         break;
                     case 4:
                         //Move bottom to bottom
+                        TakeSnapshot(stacks);
                         MoveCardToBottom(stacks[firstPressed - 49], stacks[secondPressed - 49], firstPressed);
                         break;
                     case 5:
                         //Move finish to bottom
                         if ((int)secondPressed > 0 && (int)secondPressed < 8)
                         {
+                            TakeSnapshot(stacks);
 
                         }
+                        break;
+                    case 6:
+                        isShowing = !isShowing;
+                        break;
+                    case 7:
+                        isPlaying = false;
+                        DisplayText("PRESS ANOTHER KEY TO CLOSE", 1, 44);
+                        break;
+                    case 8:
+                        //UndoMove();
+                        //stacks = CopyStack(oldStacks.ToArray());
+                        if (gameStateStack.Count < 2)
+                            break;
+                        else
+                            UndoMove(stacks);
+
                         break;
                     default:
                         //Dont move
                         break;
                 }
                 waitingForInput = false;
+                //TakeSnapshot(stacks);
             }
         }
 
@@ -105,7 +131,15 @@ void CreateGame()
 
         Console.Clear();
         Console.BackgroundColor = ConsoleColor.Black;
-        RenderStacks(stacks);
+        if (isPlaying)
+        {
+            RenderStacks(stacks);
+
+        }
+        else
+        {
+            DisplayText("PRESS ANOTHER KEY TO CLOSE", 1, 1);
+        }
     }
 
 }
@@ -137,7 +171,7 @@ void CreateGame()
 // else nothing should move
 // case 6
 
-// this does not work correctly
+
 void MoveCardAtTheTop(Stack startStack, Stack targetStack)
 {
     if (startStack.numberOfCards > 0)
@@ -188,10 +222,9 @@ void MoveCardToFinish(Stack[] stacks, Stack stackToFinish)
             stacks[8 + (int)currentCard.suit].AddCard(currentCard);
         }
     }
-    Console.BackgroundColor = ConsoleColor.Black;
+    //    Console.BackgroundColor = ConsoleColor.Black;
 }
 
-//this does not work correctly
 void MoveCardToBottom(Stack startStack, Stack targetStack, int pressedNumber)
 {
     if (startStack.stackedCards.Count() < 1)
@@ -203,13 +236,13 @@ void MoveCardToBottom(Stack startStack, Stack targetStack, int pressedNumber)
         return;
     }
 
-    //when my target has no card, only move a King
     if ((int)targetStack.GetLastCard().value < 1 && (int)startStack.GetLastCard().value == 13)
     {
         Card currentCard = startStack.GetLastCard();
         startStack.RemoveCard(currentCard);
         targetStack.RemoveCard(targetStack.GetFirstCard());
         targetStack.AddCard(currentCard);
+        
         return;
     }
 
@@ -231,8 +264,9 @@ void MoveCardToBottom(Stack startStack, Stack targetStack, int pressedNumber)
         Card currentCard = startStack.GetCard(index);
         startStack.RemoveCard(currentCard);
         targetStack.AddCard(currentCard);
+        
     }
-
+    
 
 }
 
@@ -317,16 +351,26 @@ bool IsValidMoveAtBottom(Card bottomCard, Card topCard)
     return (!IsSameSuitColor(bottomCard, topCard) && CheckForCorrectValue(bottomCard, topCard));
 }
 
-bool IsValidMoveToFinish(Card cardToMove, Card finishCard)
-{
-    return (IsSameSuit(cardToMove, finishCard) && CheckForCorrectValue(finishCard, cardToMove));
-}
-
 (bool, int, int) GetInputs()
 {
     int firstKeyPressed = Console.ReadKey(true).KeyChar;
 
     if (firstKeyPressed == (int)Inputs.Space)
+    {
+        return (true, firstKeyPressed, firstKeyPressed);
+    }
+
+    if (firstKeyPressed == (int)Inputs.H || firstKeyPressed == 104)
+    {
+        return (true, 69, 42);
+    }
+
+    if (firstKeyPressed == (int)Inputs.ESC)
+    {
+        return (true, firstKeyPressed, firstKeyPressed);
+    }
+
+    if (firstKeyPressed == (int)Inputs.Backspace)
     {
         return (true, firstKeyPressed, firstKeyPressed);
     }
@@ -351,6 +395,21 @@ int GetMovingIndex(int firstValue, int secondValue)
     if (firstValue == (int)Inputs.Space)
     {
         return 0;
+    }
+
+    if (firstValue == 69)
+    {
+        return 6;
+    }
+
+    if (firstValue == (int)Inputs.ESC)
+    {
+        return 7;
+    }
+
+    if (firstValue == (int)Inputs.Backspace)
+    {
+        return 8;
     }
 
     if (firstValue == (int)Inputs.Zero && firstValue == secondValue)
@@ -459,20 +518,21 @@ void DisplayAllCards(Card[] cards, bool showBoard)
         }
 
 
-            Random random = new Random();
-            n = array.Count();
-            while (n > 1)
-            {
-                n--;
-                int i = random.Next(n + 1);
-                int temp = array[i];
-                array[i] = array[n];
-                array[n] = temp;
-            }
+        Random random = new Random();
+        n = array.Count();
+        while (n > 1)
+        {
+            n--;
+            int i = random.Next(n + 1);
+            int temp = array[i];
+            array[i] = array[n];
+            array[n] = temp;
+        }
 
 
         for (int m = 0; m < cards.Length; m++)
-        {   int k = array[m];
+        {
+            int k = array[m];
             cards[k].faceUp = true;
             System.Threading.Thread.Sleep(50);
             RenderCard(cards[k], (k % 7) * Card.renderWidth, (k / 7) * Card.renderHeight);
@@ -606,13 +666,25 @@ void RenderStacks(Stack[] stacks)
             RenderEmpty(k, 1);
         }
     }
-
     DisplayText("0", 14, 10);
-    DisplayText("How to play:", 1, 40);
-    DisplayText("Choose a number (0,1,...,7) from where you want to move,", 1, 41);
-    DisplayText("then another number (1,2,...,7) to where you want to move.", 1, 42);
-    DisplayText("Press SPACE to get another card",1,43);
-    DisplayText("Press the same number twice to finish a card", 1, 44);
+
+}
+
+void ToggleHelpText(bool isShowing)
+{
+    if (isShowing)
+    {
+
+        DisplayText("CONTROLS", 1, 44);
+        DisplayText("Choose a number (0,1,...,7) from where you want to move,", 1, 45);
+        DisplayText("then another number (1,2,...,7) to where you want to move.", 1, 46);
+        DisplayText("Press SPACE to get another card", 1, 47);
+        DisplayText("Press the same number twice to finish a card", 1, 48);
+        DisplayText("Press ESC to quit", 1, 49);
+        return;
+    }
+    else
+        DisplayText("Press H to show CONTROLS", 1, 44);
 }
 
 Stack[] CreateStacks(Card[] cards)
@@ -639,6 +711,53 @@ Stack[] CreateStacks(Card[] cards)
 
     return stacks;
 }
+
+Stack CopyStack(Stack original)
+{
+    Stack copy = new Stack(cards, original.numberOfCards, original.firstCardNumber, (int)original.position);
+
+    // Create deep copies of cards in the stack
+    List<Card> copiedCards = new List<Card>();
+    foreach (Card card in original.stackedCards)
+    {
+        copiedCards.Add(new Card(card.suit, card.value, card.faceUp));
+    }
+    copy.stackedCards = copiedCards;
+
+    return copy;
+}
+
+
+
+
+// Function to take a snapshot of the game state and push it onto the stack
+void TakeSnapshot(Stack[] stacks)
+{
+    Stack[] snapshot = new Stack[stacks.Length];
+
+    for (int i = 0; i < stacks.Length; i++)
+    {
+        // Create a deep copy of each stack and its cards
+        snapshot[i] = CopyStack(stacks[i]);
+    }
+
+    gameStateStack.Push(snapshot);
+}
+
+
+// Function to undo the last move
+void UndoMove(Stack[] stacks)
+{
+    if (gameStateStack.Count > 0)
+    {
+        // Pop the last snapshot from the stack
+        Stack[] snapshot = gameStateStack.Pop();
+
+        // Restore the game state to the snapshot
+        Array.Copy(snapshot, stacks, snapshot.Length);
+    }
+}
+
 enum Inputs
 {
     Zero = 48,
@@ -651,7 +770,11 @@ enum Inputs
     Seven = 55,
     Eight = 56,
     Nine = 57,
-    Space = 32
+    Space = 32,
+    H = 72,
+    ESC = 27,
+    Backspace = 8
+
 }
 
 enum Suit
@@ -660,7 +783,7 @@ enum Suit
     Hearts = 0,
     Clubs = 1,
     Diamonds = 2,
-    Spades = 3,
+    Spades = 3
 }
 
 enum Value
@@ -703,6 +826,7 @@ class Stack
     public int numberOfCards;
     public Position position;
     public int positionX, positionY;
+    public int firstCardNumber;
 
     private Card emptyCard = new Card((Suit)(-1), (Value)(-1), true);
 
@@ -710,6 +834,7 @@ class Stack
     {
         this.numberOfCards = numberOfCards;
         this.position = (Position)position;
+        this.firstCardNumber = firstCardNumber;
         stackedCards = new List<Card>();
 
         if (position >= 0 && position <= 7)
