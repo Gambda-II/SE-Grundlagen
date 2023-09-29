@@ -11,6 +11,9 @@
 // Crashes when trying to move from bottom to empty FIXED
 // Weird movement happens sometimes, cards get mixed up sometimes
 
+// NOT INTENDED
+// Can undo moves that didnt change anything, snapshots should only be taken, when a legitimate move happened
+
 // TO ADD
 // How to play: Add Display that shows how to move cards ADDED
 // Can move cards from finish to bottom
@@ -675,11 +678,12 @@ void ToggleHelpText(bool isShowing)
     if (isShowing)
     {
 
-        DisplayText("CONTROLS", 1, 44);
-        DisplayText("Choose a number (0,1,...,7) from where you want to move,", 1, 45);
-        DisplayText("then another number (1,2,...,7) to where you want to move.", 1, 46);
-        DisplayText("Press SPACE to get another card", 1, 47);
-        DisplayText("Press the same number twice to finish a card", 1, 48);
+        DisplayText("CONTROLS", 1, 43);
+        DisplayText("Choose a number (0,1,...,7) from where you want to move,", 1, 44);
+        DisplayText("then another number (1,2,...,7) to where you want to move.", 1, 45);
+        DisplayText("Press SPACE to get another card", 1, 46);
+        DisplayText("Press the same number twice to finish a card", 1, 47);
+        DisplayText("Press RETURN <- to undo", 1, 48);
         DisplayText("Press ESC to quit", 1, 49);
         return;
     }
