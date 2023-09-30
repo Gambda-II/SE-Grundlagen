@@ -4,20 +4,26 @@
 
 
 // BUGS
-// Can not move a stack of cards if they are the whole stack FIXED
-// Can move wrong cards from empty to bottom FIXED
-// Sometimes the whole screen turns blue
-// Can not move a stack starting with king FIXED
-// Crashes when trying to move from bottom to empty FIXED
-// Weird movement happens sometimes, cards get mixed up sometimes
+// Can not move a stack of cards if they are the whole stack        FIXED
+// Can move wrong cards from empty to bottom                        FIXED
+// Sometimes the whole screen turns blue                            I didn't do anything about it, but it never happened again
+// Can not move a stack starting with king                          FIXED
+// Crashes when trying to move from bottom to empty                 FIXED
+// Weird movement happens sometimes, cards get mixed up sometimes   
 
 // NOT INTENDED
 // Can undo moves that didnt change anything, snapshots should only be taken, when a legitimate move happened
 
-// TO ADD
-// How to play: Add Display that shows how to move cards ADDED
+// TO ADD, TO DO
+// How to play: Add Display that shows how to move cards            ADDED
 // Can move cards from finish to bottom
-// Can undo ADDED
+// Can undo                                                         ADDED
+// 
+// OPTIMIZATION!!!  Only save cards if a valid move happened,
+//                  reduce the number of inputs given,
+//                  only render changes, not every card,
+//                  code gets more messy, add regions / classes
+// 
 
 Stack<Stack[]> gameStateStack = new Stack<Stack[]>();
 Card[] karten = CreateCards();
