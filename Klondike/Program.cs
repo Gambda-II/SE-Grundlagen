@@ -107,7 +107,7 @@ void CreateGame()
                         //Move finish to bottom
                         if ((int)secondPressed > 0 && (int)secondPressed < 8)
                         {
-                            TakeSnapshot(stacks);
+                            //TakeSnapshot(stacks);
 
                         }
                         break;
@@ -125,7 +125,6 @@ void CreateGame()
                             break;
                         else
                             UndoMove(stacks);
-
                         break;
                     default:
                         //Dont move
@@ -251,7 +250,7 @@ void MoveCardToBottom(Stack startStack, Stack targetStack, int pressedNumber)
         startStack.RemoveCard(currentCard);
         targetStack.RemoveCard(targetStack.GetFirstCard());
         targetStack.AddCard(currentCard);
-        
+
         return;
     }
 
@@ -273,9 +272,9 @@ void MoveCardToBottom(Stack startStack, Stack targetStack, int pressedNumber)
         Card currentCard = startStack.GetCard(index);
         startStack.RemoveCard(currentCard);
         targetStack.AddCard(currentCard);
-        
+
     }
-    
+
 
 }
 
@@ -767,7 +766,7 @@ void UndoMove(Stack[] stacks)
         Array.Copy(snapshot, stacks, snapshot.Length);
     }
 }
-
+#region enumerates
 enum Inputs
 {
     Zero = 48,
@@ -786,7 +785,6 @@ enum Inputs
     Backspace = 8
 
 }
-
 enum Suit
 {
     Empty = -1,
@@ -795,7 +793,6 @@ enum Suit
     Diamonds = 2,
     Spades = 3
 }
-
 enum Value
 {
     Empty = -1,
@@ -829,7 +826,9 @@ enum Position
     FinishStackSpades = 30,
     FinishStackDiamonds = 40
 }
+#endregion
 
+#region classes
 class Stack
 {
     public List<Card> stackedCards;
@@ -1050,3 +1049,4 @@ class Card
         }
     }
 }
+#endregion
