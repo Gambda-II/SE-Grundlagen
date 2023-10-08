@@ -21,18 +21,7 @@
                 $"Width: \t\t{rectangle.Width}\n" +
                 $"Circumference: \t{rectangle.CalculateCircumference()}\n" +
                 $"Area: \t\t{rectangle.CalculateArea()}\n");
-            /*
-            Triangle triangle = new Triangle(12.3m,4.56m,45.0f);
-            Console.WriteLine($"Triangle\n" +
-                $"Baselength: \t {triangle.Base}\n" +
-                $"Height: \t {triangle.Height}\n" +
-                $"Sidelengths: \t " +
-                $"a = {triangle.FirstSide}, b = {triangle.SecondSide}, c = {triangle.ThirdSide}\n" +
-                $"Angles: \t " +
-                $"Alpha = {triangle.Alpha}°, Beta = {triangle.Beta}°, Gamma = {triangle.Gamma}°\n" +
-                $"Circumference: \t {triangle.CalculateCircumference()}\n" +
-                $"Area: \t\t {triangle.CalculateArea()}");
-            */
+
 
             Triangle triangle = new Triangle(3.0f,4.0f,5.0f);
             Console.WriteLine($"Triangle\n" +

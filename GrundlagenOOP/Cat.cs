@@ -1,7 +1,7 @@
 ﻿namespace GrundlagenOOP;
 public class Cat
 {
-    // Variables inside a class -> Properties
+    // Variables inside a class -> Properties oder Fields
     public string Name;
     public int Age;
     public string Color;

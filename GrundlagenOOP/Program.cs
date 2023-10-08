@@ -1,4 +1,6 @@
-﻿namespace GrundlagenOOP;
+﻿using System.Text;
+
+namespace GrundlagenOOP;
 
 internal class Program
 {
@@ -27,5 +29,17 @@ internal class Program
         Console.WriteLine(cat);
         Cat kat = new Cat("Katzer", 100, "blau");
         Console.WriteLine(kat);
+
+
+        // fields vs properties
+        Dog snoop = new Dog(0,"Calvin Cordozar Broadus Jr.", "black");
+        var snoopy = new Dog(1, "Snoopy", "blacker");
+        Dog scooby = new(2,"Doo","slightly gray");
+
+        Person snopdog = new("snop", "dog");
+        Console.WriteLine(snopdog.FullName());
+        Console.WriteLine(snopdog.FullNameLambda);
+        snopdog.Platzhalter(snopdog.FirstName);
+        Console.WriteLine(snopdog.FirstName.Contains("s"));
     }
 }

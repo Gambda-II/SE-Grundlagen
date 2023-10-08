@@ -37,13 +37,37 @@
         */
 
         public float FirstSide = 0.0f, SecondSide = 0.0f, ThirdSide = 0.0f;
-        public float Circumference { get { return FirstSide + SecondSide + ThirdSide; } }
-        public float Area { get { return .25f * MathF.Sqrt((FirstSide + SecondSide + ThirdSide) * (-FirstSide + SecondSide + ThirdSide) * (FirstSide - SecondSide + ThirdSide) * (FirstSide + SecondSide - ThirdSide)); ; } }
+        public float Circumference
+        {
+            get
+            {
+                return FirstSide + SecondSide + ThirdSide;
+            }
+        }
+
+        public float Area
+        {
+            get
+            {
+                return .25f * MathF.Sqrt((FirstSide + SecondSide + ThirdSide) * (- FirstSide + SecondSide + ThirdSide) * (FirstSide - SecondSide + ThirdSide) * (FirstSide + SecondSide - ThirdSide));
+            }
+        }
         public Triangle(float a, float b, float c)
         {
             FirstSide = a;
             SecondSide = b;
             ThirdSide = c;
+        }
+
+        public float CalculateCircumference()
+        {
+            return FirstSide + SecondSide + ThirdSide;
+        }
+
+        public float CalculateArea()
+        {
+            return .25f * MathF.Sqrt((FirstSide + SecondSide + ThirdSide) * 
+                (- FirstSide + SecondSide + ThirdSide) * (FirstSide - SecondSide + ThirdSide) * (FirstSide + SecondSide - ThirdSide));
         }
 
     }
