@@ -18,14 +18,17 @@
 // How to play: Add Display that shows how to move cards            ADDED
 // Can move cards from finish to bottom
 // Can undo                                                         ADDED
+// Add a Clock / Timer
+// Add a score?
 // 
 // OPTIMIZATION!!!  Only save cards if a valid move happened,
 //                  reduce the number of inputs given,
 //                  only render changes, not every card,
 //                  code gets more messy, add regions / classes
 // 
+using Klondike;
 
-Stack<Stack[]> gameStateStack = new Stack<Stack[]>();
+Stack<Stack[]> gameStateStack = new ();
 Card[] karten = CreateCards();
 Card[] cards = CreateShuffledCards(karten);
 Stack[] stacks = CreateStacks(cards);
@@ -43,7 +46,7 @@ void CreateGame()
 
     // using this instead of new Card[0]; I'm not even using this?
     Card[] emptyCards = Array.Empty<Card>();
-    Card emptyCard = new Card((Suit)(-1), (Value)(-1), true);
+    Card emptyCard = new((Suit)(-1), (Value)(-1), true);
     //
     //Stack[] oldStacks = CopyStack(stacks.ToArray());
 
@@ -205,7 +208,7 @@ void MoveCardAtTheTop(Stack startStack, Stack targetStack)
 
 void MoveCardToFinish(Stack[] stacks, Stack stackToFinish)
 {
-    Card currentCard = new Card(0, 0, false);
+    Card currentCard = new(0, 0, false);
     if (stackToFinish.numberOfCards > 0)
     {
 
@@ -235,7 +238,7 @@ void MoveCardToFinish(Stack[] stacks, Stack stackToFinish)
 
 void MoveCardToBottom(Stack startStack, Stack targetStack, int pressedNumber)
 {
-    if (startStack.stackedCards.Count() < 1)
+    if (startStack.stackedCards.Count < 1)
         return;
 
     int topValue = (int)startStack.GetLastCard().value;
@@ -455,7 +458,7 @@ void DisplayWinScreen(Card[] karten)
     for (int k = 0; k < 500; k++)
     {
         Array colors = Enum.GetValues(typeof(ConsoleColor));
-        Random randomNumber = new Random();
+        Random randomNumber = new();
         ConsoleColor randomColor = (ConsoleColor)colors.GetValue(randomNumber.Next(colors.Length));
         Console.BackgroundColor = randomColor;
         Console.Write("You win! ");
@@ -474,7 +477,7 @@ Card[] CreateShuffledCards(Card[] cards)
     {
         numbers[i] = i;
     }
-    Random rnd = new Random();
+    Random rnd = new();
     int[] permutation = numbers.OrderBy(x => rnd.Next()).ToArray();
 
     Card[] shuffledCards = new Card[cards.Length];
@@ -526,8 +529,8 @@ void DisplayAllCards(Card[] cards, bool showBoard)
         }
 
 
-        Random random = new Random();
-        n = array.Count();
+        Random random = new();
+        n = array.Length;
         while (n > 1)
         {
             n--;
@@ -592,8 +595,8 @@ void RenderStack(Stack stack)
     {
         posX = 0 * Card.renderWidth;
         posY = 0 * Card.renderHeight;
-        stack.GetCard(stack.stackedCards.Count() - 1).faceUp = stack.stackedCards.Count() - 1 > 0 ? false : true;
-        RenderCard(stack.GetCard(stack.stackedCards.Count() - 1), posX, posY + 1);
+        stack.GetCard(stack.stackedCards.Count - 1).faceUp = stack.stackedCards.Count - 1 <= 0;
+        RenderCard(stack.GetCard(stack.stackedCards.Count - 1), posX, posY + 1);
     }
     else if (factor == -1)
     {
@@ -659,7 +662,7 @@ void RenderStacks(Stack[] stacks)
     }
 
     int i = 7;
-    for (int k = 30; k < 61; k = k + 10)
+    for (int k = 30; k < 61; k += 10)
     {
         i += 1;
 
@@ -723,10 +726,10 @@ Stack[] CreateStacks(Card[] cards)
 
 Stack CopyStack(Stack original)
 {
-    Stack copy = new Stack(cards, original.numberOfCards, original.firstCardNumber, (int)original.position);
+    Stack copy = new(cards, original.numberOfCards, original.firstCardNumber, (int)original.position);
 
     // Create deep copies of cards in the stack
-    List<Card> copiedCards = new List<Card>();
+    List<Card> copiedCards = new();
     foreach (Card card in original.stackedCards)
     {
         copiedCards.Add(new Card(card.suit, card.value, card.faceUp));
@@ -825,228 +828,5 @@ enum Position
     FinishStackClubs = 20,
     FinishStackSpades = 30,
     FinishStackDiamonds = 40
-}
-#endregion
-
-#region classes
-class Stack
-{
-    public List<Card> stackedCards;
-    public int numberOfCards;
-    public Position position;
-    public int positionX, positionY;
-    public int firstCardNumber;
-
-    private Card emptyCard = new Card((Suit)(-1), (Value)(-1), true);
-
-    public Stack(Card[] cards, int numberOfCards, int firstCardNumber, int position)
-    {
-        this.numberOfCards = numberOfCards;
-        this.position = (Position)position;
-        this.firstCardNumber = firstCardNumber;
-        stackedCards = new List<Card>();
-
-        if (position >= 0 && position <= 7)
-        {
-            positionX = (position - 1) * Card.renderWidth + position - 1;
-            positionY = 2 * Card.renderHeight;
-        }
-        else if (position >= 10)
-        {
-            positionX = (position / 10 + 1) * Card.renderWidth + 11 + (int)position / 10;
-            positionY = 0 * Card.renderHeight;
-        }
-        else
-        {
-            positionX = 0;
-            positionY = 0;
-        }
-
-        for (int i = firstCardNumber; i < firstCardNumber + numberOfCards; i++)
-        {
-            Card card = cards[i];
-            card.faceUp = (i == firstCardNumber + numberOfCards - 1 && position != 0) ? true : false;
-            stackedCards.Add(card);
-        }
-
-        if (stackedCards.Count() == 0)
-        {
-            //AddCard(emptyCard);
-            numberOfCards = 0;
-        }
-
-    }
-
-    public Card GetCard(int positionOfCard)
-    {
-        if (stackedCards.Count > 0)
-        {
-            Card card = stackedCards[positionOfCard];
-            return card;
-        }
-
-        return emptyCard;
-    }
-
-    public Card GetFirstCard()
-    {
-        if (numberOfCards > 0)
-        {
-            // ???
-            return stackedCards[numberOfCards - 1];
-        }
-        return stackedCards[0];
-    }
-
-    public Card GetLastCard()
-    {
-        return stackedCards.Last<Card>();
-    }
-
-    public void TurnCard(Card card)
-    {
-        card.faceUp = !(card.faceUp);
-    }
-
-    public void AddCard(Card card)
-    {
-        if (stackedCards.Count() > 0 && numberOfCards == 0)
-        {
-            stackedCards.Remove(emptyCard);
-        }
-
-        if (numberOfCards > 0)
-        {
-            stackedCards.Last<Card>().faceUp = true;
-        }
-
-        stackedCards.Add(card);
-        stackedCards.Last<Card>().faceUp = true;
-        numberOfCards++;
-    }
-
-    public void RemoveCard(Card card)
-    {
-
-        if (numberOfCards > 0)
-        {
-            stackedCards.Remove(card);
-            numberOfCards--;
-            if (numberOfCards == 0)
-            {
-                stackedCards.Add(emptyCard);
-                emptyCard.faceUp = true;
-
-            }
-            else
-            {
-                stackedCards.Last<Card>().faceUp = true;
-            }
-
-        }
-        else if (numberOfCards == 0 && stackedCards.Count > 0)
-        {
-            stackedCards = new List<Card>();
-            //stackedCards.Remove(card);
-            stackedCards.Add(emptyCard);
-
-        }
-    }
-}
-
-class Card
-{
-    public Suit suit;
-    public Value value;
-    public bool faceUp;
-
-    private string[] symbols = { "♥", "♣", "♦", "♠" };
-
-    public const int renderHeight = 7;
-    public const int renderWidth = 9;
-
-    public Card(Suit suit, Value value, bool faceUp)
-    {
-        this.suit = suit;
-        this.value = value;
-        this.faceUp = faceUp;
-    }
-
-    public string[] Render()
-    {
-        if (!faceUp && (int)value > 0)
-        {
-            Console.BackgroundColor = ConsoleColor.Yellow;
-            return new string[]
-            {
-                $"┌───────┐",
-                $"|░░░░░░░|",
-                $"│▒▒▒▒▒▒▒│",
-                $"│▓▓▓▓▓▓▓│",
-                $"│▓▓▓▓▓▓▓│",
-                $"│▒▒▒▒▒▒▒│",
-                $"|░░░░░░░|",
-                $"└───────┘",
-            };
-        }
-        else if (faceUp && (int)value > 0)
-        {
-            string currentCard = (int)value > 10 || (int)value == 01 ? $"{symbols[((int)suit)]}{value.ToString()[0]}" : $"{symbols[((int)suit)]}{((int)value)}";
-            string a = currentCard.Length < 3 ? $"{currentCard} " : currentCard;
-            string b = currentCard.Length < 3 ? $" {currentCard}" : currentCard;
-
-            switch ((int)suit)
-            {
-                case 0:
-                    Console.BackgroundColor = ConsoleColor.DarkRed;
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    break;
-                case 1:
-                    Console.BackgroundColor = ConsoleColor.DarkCyan;
-                    Console.BackgroundColor = ConsoleColor.Blue;
-                    break;
-                case 2:
-                    Console.BackgroundColor = ConsoleColor.DarkYellow;
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    break;
-                case 3:
-                    Console.BackgroundColor = ConsoleColor.DarkGreen;
-                    Console.BackgroundColor = ConsoleColor.Blue;
-                    break;
-                default:
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    break;
-
-            }
-            Console.ForegroundColor = ConsoleColor.Black;
-            return new string[]
-            {
-                $"┌───────┐",
-                $"|{a}    |",
-                $"│▀▄▀▄▀▄▀│",
-                $"│       │",
-                $"│       │",
-                $"│▄▀▄▀▄▀▄│",
-                $"|    {b}|",
-                $"└───────┘",
-            };
-        }
-        else
-        {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.White;
-            return new string[]
-            {
-                $"┌───────┐",
-                $"|       |",
-                $"│       │",
-                $"│       │",
-                $"│       │",
-                $"│       │",
-                $"|       |",
-                $"└───────┘",
-            };
-        }
-    }
 }
 #endregion
