@@ -36,7 +36,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassCalculator", "ClassCal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrundlagenOOP", "GrundlagenOOP\GrundlagenOOP.csproj", "{7FD537B0-2BFA-463F-BA11-1F0769551AA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wörtel", "Wörtel\Wörtel.csproj", "{0BA830D5-8A02-47D2-BC2E-451808275112}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wörtel", "Wörtel\Wörtel.csproj", "{0BA830D5-8A02-47D2-BC2E-451808275112}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Übungen", "Übungen\Übungen.csproj", "{45564241-E01D-4A6F-A932-86BEBEDC519C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encapsulation and Inheritance", "Encapsulation and Inheritance\Encapsulation and Inheritance.csproj", "{1A967055-DB71-494C-9A7E-D250B469EB86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +112,14 @@ Global
 		{0BA830D5-8A02-47D2-BC2E-451808275112}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BA830D5-8A02-47D2-BC2E-451808275112}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BA830D5-8A02-47D2-BC2E-451808275112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45564241-E01D-4A6F-A932-86BEBEDC519C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45564241-E01D-4A6F-A932-86BEBEDC519C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45564241-E01D-4A6F-A932-86BEBEDC519C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45564241-E01D-4A6F-A932-86BEBEDC519C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A967055-DB71-494C-9A7E-D250B469EB86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A967055-DB71-494C-9A7E-D250B469EB86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A967055-DB71-494C-9A7E-D250B469EB86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A967055-DB71-494C-9A7E-D250B469EB86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
