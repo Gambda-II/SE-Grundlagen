@@ -22,7 +22,7 @@ internal class Card
     {
         if (!faceUp && (int)value > 0)
         {
-            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
             return new string[]
             {
                 $"┌───────┐",
