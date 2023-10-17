@@ -65,7 +65,7 @@ Please note. The following pseudo code ist André certified.
 Gib eine Zahl ein und speicher diese unter der Variable N
 Initalisiere eine Variable F
 
-Wenn N kleiner als 1
+Wenn N kleiner als 0
     Gib -1 zurück
 
 Wenn N gleich 0
