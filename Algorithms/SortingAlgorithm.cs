@@ -40,14 +40,47 @@ internal class SortingAlgorithm
             {
                 if (array[j] > array[j + 1])
                 {
-                    swap (array, i, j);
+                    swap(array, i, j);
                 }
             }
         }
 
     }
 
+    public static void SelectionSort(int[] array)
+    {
+        for (int pos = 0; pos < array.Length; pos++)
+        {
+            int min = pos;
 
+            for (int i = pos + 1; i < array.Length; i++)
+            {
+                if (array[min] > array[i])
+                {
+                    min = i;
+                }
+            }
+
+            swap(array,pos,min);
+        }
+    }
+
+
+    public static void InsertionSort(int[] array)
+    {
+        for (int pos = 1; pos < array.Length; pos++)
+        {
+            int i = pos - 1;
+            while (i >= 0 && array[i] > array[i+1])
+            {
+                swap(array, i, i + 1);
+                i--;
+            }
+        }
+    }
+
+
+    // helper method SWAP to swap to elements in a array for BubbleSort
     public static void swap(int[] targetArray, int firstIndex, int secondIndex)
     {
         int temp = targetArray[firstIndex];
