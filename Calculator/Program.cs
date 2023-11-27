@@ -2,6 +2,9 @@
 
 decimal GetNumber()
 {
+
+    
+
     decimal num;
     bool checkParse;
     string input;
