@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using System.Threading.Tasks.Sources;
-
-namespace KarmOderWalt;
+﻿namespace KarmOderWalt;
 
 public class KarmOderWalt
 {
